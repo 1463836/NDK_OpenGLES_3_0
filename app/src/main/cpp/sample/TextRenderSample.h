@@ -19,53 +19,55 @@
 
 /// Holds all state information relevant to a character as loaded using FreeType
 struct Character {
-	GLuint textureID;   // ID handle of the glyph texture
-	glm::ivec2 size;    // Size of glyph
-	glm::ivec2 bearing;  // Offset from baseline to left/top of glyph
-	GLuint advance;    // Horizontal offset to advance to next glyph
+    GLuint textureID;   // ID handle of the glyph texture
+    glm::ivec2 size;    // Size of glyph
+    glm::ivec2 bearing;  // Offset from baseline to left/top of glyph
+    GLuint advance;    // Horizontal offset to advance to next glyph
 };
 
-class TextRenderSample : public GLSampleBase
-{
+class TextRenderSample : public GLSampleBase {
 public:
-	TextRenderSample();
+    TextRenderSample();
 
-	virtual ~TextRenderSample();
+    virtual ~TextRenderSample();
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
 
-	virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+    virtual void Destroy();
 
-	void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
+    virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+
+    void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
 
 private:
-	/**
-	 * (x,y)为屏幕坐标系的位置，即原点位于屏幕中心，x(-1.0,1.0), y(-1.0,1.0)
-	 * */
-	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color, glm::vec2 viewport);
+    /**
+     * (x,y)为屏幕坐标系的位置，即原点位于屏幕中心，x(-1.0,1.0), y(-1.0,1.0)
+     * */
+    void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color,
+                    glm::vec2 viewport);
 
-	void LoadFacesByASCII();
-	void LoadFacesByUnicode(int *unicodeArr, int size);
+    void LoadFacesByASCII();
 
-	GLuint m_TextureId;
-	GLint m_SamplerLoc;
-	GLint m_MVPMatLoc;
-	GLuint m_VaoId;
-	GLuint m_VboId;
-	NativeImage m_RenderImage;
-	glm::mat4 m_MVPMatrix;
+    void LoadFacesByUnicode(int *unicodeArr, int size);
 
-	int m_AngleX;
-	int m_AngleY;
-	float m_ScaleX;
-	float m_ScaleY;
+    GLuint m_TextureId;
+    GLint m_SamplerLoc;
+    GLint m_MVPMatLoc;
+    GLuint m_VaoId;
+    GLuint m_VboId;
+    NativeImage m_RenderImage;
+    glm::mat4 m_MVPMatrix;
 
-	std::map<GLint, Character> m_Characters;
+    int m_AngleX;
+    int m_AngleY;
+    float m_ScaleX;
+    float m_ScaleY;
+
+    std::map<GLint, Character> m_Characters;
 
 };
 

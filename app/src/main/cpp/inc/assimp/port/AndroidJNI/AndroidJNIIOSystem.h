@@ -58,31 +58,31 @@ class ASSIMP_API AndroidJNIIOSystem : public DefaultIOSystem
 {
 public:
 
-	/** Initialize android activity data */
-	std::string mApkWorkspacePath;
-	AAssetManager* mApkAssetManager;
+    /** Initialize android activity data */
+    std::string mApkWorkspacePath;
+    AAssetManager* mApkAssetManager;
 
-	/** Constructor. */
-	AndroidJNIIOSystem(ANativeActivity* activity);
+    /** Constructor. */
+    AndroidJNIIOSystem(ANativeActivity* activity);
 
-	/** Destructor. */
-	~AndroidJNIIOSystem();
+    /** Destructor. */
+    ~AndroidJNIIOSystem();
 
-	// -------------------------------------------------------------------
-	/** Tests for the existence of a file at the given path. */
-	bool Exists( const char* pFile) const;
+    // -------------------------------------------------------------------
+    /** Tests for the existence of a file at the given path. */
+    bool Exists( const char* pFile) const;
 
-	// -------------------------------------------------------------------
-	/** Opens a file at the given path, with given mode */
-	IOStream* Open( const char* strFile, const char* strMode);
+    // -------------------------------------------------------------------
+    /** Opens a file at the given path, with given mode */
+    IOStream* Open( const char* strFile, const char* strMode);
 
-	// ------------------------------------------------------------------------------------------------
-	// Inits Android extractor
-	void AndroidActivityInit(ANativeActivity* activity);
+    // ------------------------------------------------------------------------------------------------
+    // Inits Android extractor
+    void AndroidActivityInit(ANativeActivity* activity);
 
-	// ------------------------------------------------------------------------------------------------
-	// Extracts android asset
-	bool AndroidExtractAsset(std::string name);
+    // ------------------------------------------------------------------------------------------------
+    // Extracts android asset
+    bool AndroidExtractAsset(std::string name);
 
 };
 

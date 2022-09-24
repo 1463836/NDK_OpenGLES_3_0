@@ -13,36 +13,37 @@
 #include "../util/ImageDef.h"
 #include <thread>
 #include <GLRenderLooper.h>
+#include <condition_variable>
 
 using namespace std;
 
-class SharedEGLContextSample : public GLSampleBase
-{
+class SharedEGLContextSample : public GLSampleBase {
 public:
-	SharedEGLContextSample();
+    SharedEGLContextSample();
 
-	virtual ~SharedEGLContextSample();
+    virtual ~SharedEGLContextSample();
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
 
-	static void OnAsyncRenderDone(void* callback, int fboTexId);
+    virtual void Destroy();
+
+    static void OnAsyncRenderDone(void *callback, int fboTexId);
 
 private:
-	GLuint m_ImageTextureId;
-	GLuint m_FboTextureId;
-	GLuint m_VaoId;
-	GLuint m_VboIds[4];
-	NativeImage m_RenderImage;
-	GLuint m_FboProgramObj;
+    GLuint m_ImageTextureId;
+    GLuint m_FboTextureId;
+    GLuint m_VaoId;
+    GLuint m_VboIds[4];
+    NativeImage m_RenderImage;
+    GLuint m_FboProgramObj;
 
-	mutex m_Mutex;
-	condition_variable m_Cond;
-	GLEnv m_GLEnv;
+    mutex m_Mutex;
+    condition_variable m_Cond;
+    GLEnv m_GLEnv;
 };
 
 

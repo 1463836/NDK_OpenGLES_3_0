@@ -43,6 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdexcept>
 #include <assimp/DefaultIOStream.h>
+
 using std::runtime_error;
 
 #ifdef _MSC_VER
@@ -54,13 +55,11 @@ using std::runtime_error;
  *  unrecoverable error occurs while importing. Loading APIs return
  *  NULL instead of a valid aiScene then.  */
 class DeadlyImportError
-    : public runtime_error
-{
+        : public runtime_error {
 public:
     /** Constructor with arguments */
-    explicit DeadlyImportError( const std::string& errorText)
-        : runtime_error(errorText)
-    {
+    explicit DeadlyImportError(const std::string &errorText)
+            : runtime_error(errorText) {
     }
 
 private:
@@ -73,29 +72,29 @@ typedef DeadlyImportError DeadlyExportError;
 #endif
 
 // ---------------------------------------------------------------------------
-template <typename T>
-struct ExceptionSwallower   {
-    T operator ()() const {
+template<typename T>
+struct ExceptionSwallower {
+    T operator()() const {
         return T();
     }
 };
 
 // ---------------------------------------------------------------------------
-template <typename T>
-struct ExceptionSwallower<T*>   {
-    T* operator ()() const {
+template<typename T>
+struct ExceptionSwallower<T *> {
+    T *operator()() const {
         return NULL;
     }
 };
 
 // ---------------------------------------------------------------------------
-template <>
+template<>
 struct ExceptionSwallower<aiReturn> {
-    aiReturn operator ()() const {
+    aiReturn operator()() const {
         try {
             throw;
         }
-        catch (std::bad_alloc&) {
+        catch (std::bad_alloc &) {
             return aiReturn_OUTOFMEMORY;
         }
         catch (...) {
@@ -105,9 +104,9 @@ struct ExceptionSwallower<aiReturn> {
 };
 
 // ---------------------------------------------------------------------------
-template <>
+template<>
 struct ExceptionSwallower<void> {
-    void operator ()() const {
+    void operator()() const {
         return;
     }
 };

@@ -13,11 +13,12 @@
 #include <fcntl.h>
 #include <semaphore.h>
 #include "LogUtil.h"
+
 struct LooperMessage;
 typedef struct LooperMessage LooperMessage;
 
-void* Looper::trampoline(void* p) {
-    ((Looper*)p)->loop();
+void *Looper::trampoline(void *p) {
+    ((Looper *) p)->loop();
     return NULL;
 }
 
@@ -68,7 +69,7 @@ void Looper::addMessage(LooperMessage *msg, bool flush) {
     LooperMessage *h = head;
 
     if (flush) {
-        while(h) {
+        while (h) {
             LooperMessage *next = h->next;
             delete h;
             h = next;
@@ -89,7 +90,7 @@ void Looper::addMessage(LooperMessage *msg, bool flush) {
 }
 
 void Looper::loop() {
-    while(true) {
+    while (true) {
         // wait for available message
         sem_wait(&headDataAvailable);
 

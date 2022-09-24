@@ -8,8 +8,9 @@
 
 #include <GLUtils.h>
 #include "GLRenderLooper.h"
+
 mutex GLRenderLooper::m_Mutex;
-GLRenderLooper* GLRenderLooper::m_Instance = nullptr;
+GLRenderLooper *GLRenderLooper::m_Instance = nullptr;
 
 GLRenderLooper::~GLRenderLooper() {
 
@@ -24,7 +25,7 @@ void GLRenderLooper::handleMessage(LooperMessage *msg) {
     switch (msg->what) {
         case MSG_SurfaceCreated: {
             LOGCATE("GLRenderLooper::handleMessage MSG_SurfaceCreated");
-            m_GLEnv = (GLEnv *)msg->obj;
+            m_GLEnv = (GLEnv *) msg->obj;
             OnSurfaceCreated();
         }
             break;
@@ -47,9 +48,9 @@ void GLRenderLooper::handleMessage(LooperMessage *msg) {
 
 GLRenderLooper *GLRenderLooper::GetInstance() {
     LOGCATE("GLRenderLooper::GetInstance");
-    if(m_Instance == nullptr) {
+    if (m_Instance == nullptr) {
         unique_lock<mutex> lock(m_Mutex);
-        if(m_Instance == nullptr) {
+        if (m_Instance == nullptr) {
             m_Instance = new GLRenderLooper();
         }
     }
@@ -59,9 +60,9 @@ GLRenderLooper *GLRenderLooper::GetInstance() {
 
 void GLRenderLooper::ReleaseInstance() {
     LOGCATE("GLRenderLooper::GetInstance");
-    if(m_Instance != nullptr) {
+    if (m_Instance != nullptr) {
         unique_lock<mutex> lock(m_Mutex);
-        if(m_Instance != nullptr) {
+        if (m_Instance != nullptr) {
             delete m_Instance;
             m_Instance = nullptr;
         }
@@ -80,20 +81,19 @@ void GLRenderLooper::OnSurfaceCreated() {
 
     glBindBuffer(GL_ARRAY_BUFFER, m_GLEnv->vboIds[0]);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (const void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (const void *) 0);
     glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_GLEnv->vboIds[1]);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (const void *)0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (const void *) 0);
     glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_GLEnv->vboIds[2]);
     GO_CHECK_GL_ERROR();
     glBindVertexArray(GL_NONE);
 
-    if (!CreateFrameBufferObj())
-    {
+    if (!CreateFrameBufferObj()) {
         LOGCATE("GLRenderLooper::OnSurfaceCreated CreateFrameBufferObj fail");
     }
 }
@@ -115,7 +115,7 @@ void GLRenderLooper::OnDrawFrame() {
     GLUtils::setInt(m_GLEnv->program, "s_TextureMap", 0);
     float offset = (sin(m_FrameIndex * MATH_PI / 80) + 1.0f) / 2.0f;
     GLUtils::setFloat(m_GLEnv->program, "u_Offset", offset);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const void *)0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const void *) 0);
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
     m_OffscreenSurface->swapBuffers();
@@ -129,18 +129,15 @@ void GLRenderLooper::OnSurfaceDestroyed() {
     LOGCATE("GLRenderLooper::OnSurfaceDestroyed");
     m_GLEnv->renderDone(m_GLEnv->callbackCtx, m_FboTextureId);
 
-    if (m_VaoId)
-    {
+    if (m_VaoId) {
         glDeleteVertexArrays(1, &m_VaoId);
     }
 
-    if (m_FboId)
-    {
+    if (m_FboId) {
         glDeleteFramebuffers(1, &m_FboId);
     }
 
-    if (m_FboTextureId)
-    {
+    if (m_FboTextureId) {
         glDeleteTextures(1, &m_FboTextureId);
     }
 
@@ -172,8 +169,9 @@ bool GLRenderLooper::CreateFrameBufferObj() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_FboId);
     glBindTexture(GL_TEXTURE_2D, m_FboTextureId);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_FboTextureId, 0);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GLEnv->imgSize.width, m_GLEnv->imgSize.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER)!= GL_FRAMEBUFFER_COMPLETE) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GLEnv->imgSize.width, m_GLEnv->imgSize.height, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         LOGCATE("RGB2YUVSample::CreateFrameBufferObj glCheckFramebufferStatus status != GL_FRAMEBUFFER_COMPLETE");
         return false;
     }

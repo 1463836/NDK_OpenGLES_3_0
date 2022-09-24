@@ -9,40 +9,37 @@
 #include "GLSampleBase.h"
 #include "../util/ImageDef.h"
 
-class NV21TextureMapSample: public GLSampleBase
-{
+class NV21TextureMapSample : public GLSampleBase {
 public:
-	NV21TextureMapSample()
-	{
-		m_yTextureId = GL_NONE;
-		m_uvTextureId = GL_NONE;
+    NV21TextureMapSample() {
+        m_yTextureId = GL_NONE;
+        m_uvTextureId = GL_NONE;
 
-		m_ySamplerLoc = GL_NONE;
-		m_uvSamplerLoc = GL_NONE;
+        m_ySamplerLoc = GL_NONE;
+        m_uvSamplerLoc = GL_NONE;
 
-	}
+    }
 
-	virtual ~NV21TextureMapSample()
-	{
-		NativeImageUtil::FreeNativeImage(&m_RenderImage);
-	}
+    virtual ~NV21TextureMapSample() {
+        NativeImageUtil::FreeNativeImage(&m_RenderImage);
+    }
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
+    virtual void Init();
 
-	virtual void Draw(int screenW, int screenH);
+    virtual void Draw(int screenW, int screenH);
 
-	virtual void Destroy();
+    virtual void Destroy();
 
 private:
-	GLuint m_yTextureId;
-	GLuint m_uvTextureId;
+    GLuint m_yTextureId;
+    GLuint m_uvTextureId;
 
-	GLint m_ySamplerLoc;
-	GLint m_uvSamplerLoc;
+    GLint m_ySamplerLoc;
+    GLint m_uvSamplerLoc;
 
-	NativeImage m_RenderImage;
+    NativeImage m_RenderImage;
 
 };
 

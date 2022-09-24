@@ -54,45 +54,44 @@
 */
 
 //////////////////////////////// image codec ////////////////////////////////
-namespace cv
-{
+namespace cv {
 
 //! @addtogroup imgcodecs
 //! @{
 
 //! Imread flags
-enum ImreadModes {
-       IMREAD_UNCHANGED  = -1, //!< If set, return the loaded image as is (with alpha channel, otherwise it gets cropped).
-       IMREAD_GRAYSCALE  = 0,  //!< If set, always convert image to the single channel grayscale image.
-       IMREAD_COLOR      = 1,  //!< If set, always convert image to the 3 channel BGR color image.
-       IMREAD_ANYDEPTH   = 2,  //!< If set, return 16-bit/32-bit image when the input has the corresponding depth, otherwise convert it to 8-bit.
-       IMREAD_ANYCOLOR   = 4,  //!< If set, the image is read in any possible color format.
-       IMREAD_LOAD_GDAL  = 8   //!< If set, use the gdal driver for loading the image.
-     };
+    enum ImreadModes {
+        IMREAD_UNCHANGED = -1, //!< If set, return the loaded image as is (with alpha channel, otherwise it gets cropped).
+        IMREAD_GRAYSCALE = 0,  //!< If set, always convert image to the single channel grayscale image.
+        IMREAD_COLOR = 1,  //!< If set, always convert image to the 3 channel BGR color image.
+        IMREAD_ANYDEPTH = 2,  //!< If set, return 16-bit/32-bit image when the input has the corresponding depth, otherwise convert it to 8-bit.
+        IMREAD_ANYCOLOR = 4,  //!< If set, the image is read in any possible color format.
+        IMREAD_LOAD_GDAL = 8   //!< If set, use the gdal driver for loading the image.
+    };
 
 //! Imwrite flags
-enum ImwriteFlags {
-       IMWRITE_JPEG_QUALITY        = 1,  //!< For JPEG, it can be a quality from 0 to 100 (the higher is the better). Default value is 95.
-       IMWRITE_JPEG_PROGRESSIVE    = 2,  //!< Enable JPEG features, 0 or 1, default is False.
-       IMWRITE_JPEG_OPTIMIZE       = 3,  //!< Enable JPEG features, 0 or 1, default is False.
-       IMWRITE_JPEG_RST_INTERVAL   = 4,  //!< JPEG restart interval, 0 - 65535, default is 0 - no restart.
-       IMWRITE_JPEG_LUMA_QUALITY   = 5,  //!< Separate luma quality level, 0 - 100, default is 0 - don't use.
-       IMWRITE_JPEG_CHROMA_QUALITY = 6,  //!< Separate chroma quality level, 0 - 100, default is 0 - don't use.
-       IMWRITE_PNG_COMPRESSION     = 16, //!< For PNG, it can be the compression level from 0 to 9. A higher value means a smaller size and longer compression time. Default value is 3.
-       IMWRITE_PNG_STRATEGY        = 17, //!< One of cv::ImwritePNGFlags, default is IMWRITE_PNG_STRATEGY_DEFAULT.
-       IMWRITE_PNG_BILEVEL         = 18, //!< Binary level PNG, 0 or 1, default is 0.
-       IMWRITE_PXM_BINARY          = 32, //!< For PPM, PGM, or PBM, it can be a binary format flag, 0 or 1. Default value is 1.
-       IMWRITE_WEBP_QUALITY        = 64  //!< For WEBP, it can be a quality from 1 to 100 (the higher is the better). By default (without any parameter) and for quality above 100 the lossless compression is used.
-     };
+    enum ImwriteFlags {
+        IMWRITE_JPEG_QUALITY = 1,  //!< For JPEG, it can be a quality from 0 to 100 (the higher is the better). Default value is 95.
+        IMWRITE_JPEG_PROGRESSIVE = 2,  //!< Enable JPEG features, 0 or 1, default is False.
+        IMWRITE_JPEG_OPTIMIZE = 3,  //!< Enable JPEG features, 0 or 1, default is False.
+        IMWRITE_JPEG_RST_INTERVAL = 4,  //!< JPEG restart interval, 0 - 65535, default is 0 - no restart.
+        IMWRITE_JPEG_LUMA_QUALITY = 5,  //!< Separate luma quality level, 0 - 100, default is 0 - don't use.
+        IMWRITE_JPEG_CHROMA_QUALITY = 6,  //!< Separate chroma quality level, 0 - 100, default is 0 - don't use.
+        IMWRITE_PNG_COMPRESSION = 16, //!< For PNG, it can be the compression level from 0 to 9. A higher value means a smaller size and longer compression time. Default value is 3.
+        IMWRITE_PNG_STRATEGY = 17, //!< One of cv::ImwritePNGFlags, default is IMWRITE_PNG_STRATEGY_DEFAULT.
+        IMWRITE_PNG_BILEVEL = 18, //!< Binary level PNG, 0 or 1, default is 0.
+        IMWRITE_PXM_BINARY = 32, //!< For PPM, PGM, or PBM, it can be a binary format flag, 0 or 1. Default value is 1.
+        IMWRITE_WEBP_QUALITY = 64  //!< For WEBP, it can be a quality from 1 to 100 (the higher is the better). By default (without any parameter) and for quality above 100 the lossless compression is used.
+    };
 
 //! Imwrite PNG specific flags
-enum ImwritePNGFlags {
-       IMWRITE_PNG_STRATEGY_DEFAULT      = 0,
-       IMWRITE_PNG_STRATEGY_FILTERED     = 1,
-       IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY = 2,
-       IMWRITE_PNG_STRATEGY_RLE          = 3,
-       IMWRITE_PNG_STRATEGY_FIXED        = 4
-     };
+    enum ImwritePNGFlags {
+        IMWRITE_PNG_STRATEGY_DEFAULT = 0,
+        IMWRITE_PNG_STRATEGY_FILTERED = 1,
+        IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY = 2,
+        IMWRITE_PNG_STRATEGY_RLE = 3,
+        IMWRITE_PNG_STRATEGY_FIXED = 4
+    };
 
 /** @brief Loads an image from a file.
 
@@ -129,7 +128,7 @@ returns an empty matrix ( Mat::data==NULL ). Currently, the following file forma
 
 @note In the case of color images, the decoded images will have the channels stored in B G R order.
  */
-CV_EXPORTS_W Mat imread( const String& filename, int flags = IMREAD_COLOR );
+    CV_EXPORTS_W Mat imread(const String &filename, int flags = IMREAD_COLOR);
 
 /** @brief Loads a multi-page image from a file. (see imread for details.)
 
@@ -138,7 +137,8 @@ CV_EXPORTS_W Mat imread( const String& filename, int flags = IMREAD_COLOR );
 @param mats A vector of Mat objects holding each page, if more than one.
 
 */
-CV_EXPORTS_W bool imreadmulti(const String& filename, std::vector<Mat>& mats, int flags = IMREAD_ANYCOLOR);
+    CV_EXPORTS_W bool
+    imreadmulti(const String &filename, std::vector<Mat> &mats, int flags = IMREAD_ANYCOLOR);
 
 /** @brief Saves an image to a specified file.
 
@@ -204,11 +204,11 @@ compression parameters :
     }
 @endcode
  */
-CV_EXPORTS_W bool imwrite( const String& filename, InputArray img,
-              const std::vector<int>& params = std::vector<int>());
+    CV_EXPORTS_W bool imwrite(const String &filename, InputArray img,
+                              const std::vector<int> &params = std::vector<int>());
 
 /** @overload */
-CV_EXPORTS_W Mat imdecode( InputArray buf, int flags );
+    CV_EXPORTS_W Mat imdecode(InputArray buf, int flags);
 
 /** @brief Reads an image from a buffer in memory.
 
@@ -224,7 +224,7 @@ See imread for the list of supported formats and flags description.
 
 @note In the case of color images, the decoded images will have the channels stored in B G R order.
  */
-CV_EXPORTS Mat imdecode( InputArray buf, int flags, Mat* dst);
+    CV_EXPORTS Mat imdecode(InputArray buf, int flags, Mat *dst);
 
 /** @brief Encodes an image into a memory buffer.
 
@@ -239,9 +239,9 @@ result. See imwrite for the list of supported formats and flags description.
 @note cvEncodeImage returns single-row matrix of type CV_8UC1 that contains encoded image as array
 of bytes.
  */
-CV_EXPORTS_W bool imencode( const String& ext, InputArray img,
-                            CV_OUT std::vector<uchar>& buf,
-                            const std::vector<int>& params = std::vector<int>());
+    CV_EXPORTS_W bool imencode(const String &ext, InputArray img,
+                               CV_OUT std::vector<uchar> &buf,
+                               const std::vector<int> &params = std::vector<int>());
 
 //! @} imgcodecs
 

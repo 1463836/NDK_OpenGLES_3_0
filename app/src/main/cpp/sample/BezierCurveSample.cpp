@@ -194,7 +194,8 @@ void BezierCurveSample::Draw(int screenW, int screenH) {
     glUseProgram(m_ProgramObj);
 
     glEnable(GL_BLEND);
-    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_COLOR, GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Screen blend mode
+    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_COLOR, GL_ONE,
+                        GL_ONE_MINUS_SRC_ALPHA); // Screen blend mode
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 
     glBindVertexArray(m_VaoId);
@@ -202,9 +203,9 @@ void BezierCurveSample::Draw(int screenW, int screenH) {
     //draw one
     GLUtils::setMat4(m_ProgramObj, "u_MVPMatrix", m_MVPMatrix);
     GLUtils::setVec4(m_ProgramObj, "u_StartEndPoints", glm::vec4(-1, 0,
-                                                               1, 0));
+                                                                 1, 0));
     GLUtils::setVec4(m_ProgramObj, "u_ControlPoints", glm::vec4(-0.04f, 0.99f,
-                                                              0.0f, 0.99f));
+                                                                0.0f, 0.99f));
     GLUtils::setVec4(m_ProgramObj, "u_Color", glm::vec4(1.0f, 0.3f, 0.0f, 1.0f));
     float offset = (m_FrameIndex % 100) * 1.0f / 100;
     offset = (m_FrameIndex / 100) % 2 == 1 ? (1 - offset) : offset;
@@ -224,7 +225,7 @@ void BezierCurveSample::Draw(int screenW, int screenH) {
     GLUtils::setFloat(m_ProgramObj, "u_Offset", offset);
     GLUtils::setVec4(m_ProgramObj, "u_Color", glm::vec4(0.0f, 0.3f, 0.8f, 1.0f));
     GLUtils::setVec4(m_ProgramObj, "u_ControlPoints", glm::vec4(-0.8f, 0.99f,
-                                                              0.0f, 0.0f));
+                                                                0.0f, 0.0f));
     UpdateMVPMatrix(m_MVPMatrix, m_AngleX, m_AngleY, (float) screenW / screenH);
     GLUtils::setMat4(m_ProgramObj, "u_MVPMatrix", m_MVPMatrix);
 

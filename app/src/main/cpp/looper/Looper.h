@@ -19,13 +19,19 @@ class Looper {
 
 public:
     Looper();
-    Looper&operator=(const Looper& ) = delete;
-    Looper(Looper&) = delete;
+
+    Looper &operator=(const Looper &) = delete;
+
+    Looper(Looper &) = delete;
+
     virtual ~Looper();
 
     void postMessage(int what, bool flush = false);
+
     void postMessage(int what, void *obj, bool flush = false);
+
     void postMessage(int what, int arg1, int arg2, bool flush = false);
+
     void postMessage(int what, int arg1, int arg2, void *obj, bool flush = false);
 
     void quit();

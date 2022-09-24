@@ -53,9 +53,12 @@ http://www.jalix.org/ressources/graphics/3DS/_unofficials/3ds-unofficial.txt */
 // ---------------------------------------------------------------------------
 /** Helper structure representing a face with smoothing groups assigned */
 struct FaceWithSmoothingGroup {
-    FaceWithSmoothingGroup() AI_NO_EXCEPT
-    : mIndices()
-    , iSmoothGroup(0) {
+    FaceWithSmoothingGroup()
+
+    AI_NO_EXCEPT
+            : mIndices()
+    , iSmoothGroup(
+    0) {
         // in debug builds set all indices to a common magic value
 #ifdef ASSIMP_BUILD_DEBUG
         this->mIndices[0] = 0xffffffff;
@@ -82,24 +85,23 @@ struct FaceWithSmoothingGroup {
     but as they add extra members and need to be copied by value we
     need to use a template here.
     */
-template <class T>
-struct MeshWithSmoothingGroups
-{
+template<class T>
+struct MeshWithSmoothingGroups {
     //! Vertex positions
-    std::vector<aiVector3D> mPositions;
+    std::vector <aiVector3D> mPositions;
 
     //! Face lists
-    std::vector<T> mFaces;
+    std::vector <T> mFaces;
 
     //! List of normal vectors
-    std::vector<aiVector3D> mNormals;
+    std::vector <aiVector3D> mNormals;
 };
 
 // ---------------------------------------------------------------------------
 /** Computes normal vectors for the mesh
  */
-template <class T>
-void ComputeNormalsWithSmoothingsGroups(MeshWithSmoothingGroups<T>& sMesh);
+template<class T>
+void ComputeNormalsWithSmoothingsGroups(MeshWithSmoothingGroups<T> &sMesh);
 
 
 // include implementations

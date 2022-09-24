@@ -9,41 +9,41 @@
 #include <detail/type_mat4x4.hpp>
 #include "GLSampleBase.h"
 
-class UniformBufferSample : public GLSampleBase
-{
+class UniformBufferSample : public GLSampleBase {
 public:
-	UniformBufferSample();
+    UniformBufferSample();
 
-	virtual ~UniformBufferSample();
+    virtual ~UniformBufferSample();
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
 
-	virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+    virtual void Destroy();
 
-	void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
+    virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+
+    void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
 
 private:
-	GLuint m_TextureId;
-	GLint m_SamplerLoc;
-	GLint m_MVPMatLoc;
-	GLuint m_VaoId;
-	GLuint m_UboId;
-	GLuint m_VboIds[3];
-	NativeImage m_RenderImage;
-	glm::mat4 m_MVPMatrix;
+    GLuint m_TextureId;
+    GLint m_SamplerLoc;
+    GLint m_MVPMatLoc;
+    GLuint m_VaoId;
+    GLuint m_UboId;
+    GLuint m_VboIds[3];
+    NativeImage m_RenderImage;
+    glm::mat4 m_MVPMatrix;
     glm::mat4 m_ModelMatrix;
     glm::mat4 m_ViewMatrix;
     glm::mat4 m_ProjectionMatrix;
 
-	int m_AngleX;
-	int m_AngleY;
-	float m_ScaleX;
-	float m_ScaleY;
+    int m_AngleX;
+    int m_AngleY;
+    float m_ScaleX;
+    float m_ScaleY;
 
 };
 

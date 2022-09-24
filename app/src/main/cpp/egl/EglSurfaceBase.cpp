@@ -105,7 +105,7 @@ void EglSurfaceBase::setPresentationTime(long nsecs) {
  * 获取当前像素
  * @return
  */
-char* EglSurfaceBase::getCurrentFrame() {
+char *EglSurfaceBase::getCurrentFrame() {
     char *pixels = NULL;
     glReadPixels(0, 0, getWidth(), getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     return pixels;

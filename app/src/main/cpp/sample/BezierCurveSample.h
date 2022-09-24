@@ -16,42 +16,42 @@
 #include "GLSampleBase.h"
 #include "CoordSystemSample.h"
 
-class BezierCurveSample : public GLSampleBase
-{
+class BezierCurveSample : public GLSampleBase {
 public:
-	BezierCurveSample();
+    BezierCurveSample();
 
-	virtual ~BezierCurveSample();
+    virtual ~BezierCurveSample();
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
 
-	virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+    virtual void Destroy();
 
-	void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
+    virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+
+    void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
 
 private:
     void DrawArray();
 
-	GLuint m_TextureId;
-	GLint m_SamplerLoc;
-	GLint m_MVPMatLoc;
-	GLuint m_VaoId;
-	GLuint m_VboId;
-	NativeImage m_RenderImage;
-	glm::mat4 m_MVPMatrix;
+    GLuint m_TextureId;
+    GLint m_SamplerLoc;
+    GLint m_MVPMatLoc;
+    GLuint m_VaoId;
+    GLuint m_VboId;
+    NativeImage m_RenderImage;
+    glm::mat4 m_MVPMatrix;
 
-	int m_AngleX;
-	int m_AngleY;
-	float m_ScaleX;
-	float m_ScaleY;
+    int m_AngleX;
+    int m_AngleY;
+    float m_ScaleX;
+    float m_ScaleY;
 
-	CoordSystemSample *m_pCoordSystemSample;
-	int m_FrameIndex;
+    CoordSystemSample *m_pCoordSystemSample;
+    int m_FrameIndex;
 
 };
 

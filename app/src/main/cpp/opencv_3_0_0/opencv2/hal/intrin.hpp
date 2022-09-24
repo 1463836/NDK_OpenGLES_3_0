@@ -59,211 +59,238 @@
 // access from within opencv code more accessible
 namespace cv {
 
-template<typename _Tp> struct V_TypeTraits
-{
-    typedef _Tp int_type;
-    typedef _Tp uint_type;
-    typedef _Tp abs_type;
-    typedef _Tp sum_type;
+    template<typename _Tp>
+    struct V_TypeTraits {
+        typedef _Tp int_type;
+        typedef _Tp uint_type;
+        typedef _Tp abs_type;
+        typedef _Tp sum_type;
 
-    enum { delta = 0, shift = 0 };
+        enum {
+            delta = 0, shift = 0
+        };
 
-    static int_type reinterpret_int(_Tp x) { return x; }
-    static uint_type reinterpet_uint(_Tp x) { return x; }
-    static _Tp reinterpret_from_int(int_type x) { return (_Tp)x; }
-};
+        static int_type reinterpret_int(_Tp x) { return x; }
 
-template<> struct V_TypeTraits<uchar>
-{
-    typedef uchar value_type;
-    typedef schar int_type;
-    typedef uchar uint_type;
-    typedef uchar abs_type;
-    typedef int sum_type;
+        static uint_type reinterpet_uint(_Tp x) { return x; }
 
-    typedef ushort w_type;
+        static _Tp reinterpret_from_int(int_type x) { return (_Tp) x; }
+    };
 
-    enum { delta = 128, shift = 8 };
+    template<>
+    struct V_TypeTraits<uchar> {
+        typedef uchar value_type;
+        typedef schar int_type;
+        typedef uchar uint_type;
+        typedef uchar abs_type;
+        typedef int sum_type;
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        typedef ushort w_type;
 
-template<> struct V_TypeTraits<schar>
-{
-    typedef schar value_type;
-    typedef schar int_type;
-    typedef uchar uint_type;
-    typedef uchar abs_type;
-    typedef int sum_type;
+        enum {
+            delta = 128, shift = 8
+        };
 
-    typedef short w_type;
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
 
-    enum { delta = 128, shift = 8 };
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
 
-template<> struct V_TypeTraits<ushort>
-{
-    typedef ushort value_type;
-    typedef short int_type;
-    typedef ushort uint_type;
-    typedef ushort abs_type;
-    typedef int sum_type;
+    template<>
+    struct V_TypeTraits<schar> {
+        typedef schar value_type;
+        typedef schar int_type;
+        typedef uchar uint_type;
+        typedef uchar abs_type;
+        typedef int sum_type;
 
-    typedef unsigned w_type;
-    typedef uchar nu_type;
+        typedef short w_type;
 
-    enum { delta = 32768, shift = 16 };
+        enum {
+            delta = 128, shift = 8
+        };
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
 
-template<> struct V_TypeTraits<short>
-{
-    typedef short value_type;
-    typedef short int_type;
-    typedef ushort uint_type;
-    typedef ushort abs_type;
-    typedef int sum_type;
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
 
-    typedef int w_type;
-    typedef uchar nu_type;
-    typedef schar n_type;
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
 
-    enum { delta = 128, shift = 8 };
+    template<>
+    struct V_TypeTraits<ushort> {
+        typedef ushort value_type;
+        typedef short int_type;
+        typedef ushort uint_type;
+        typedef ushort abs_type;
+        typedef int sum_type;
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        typedef unsigned w_type;
+        typedef uchar nu_type;
 
-template<> struct V_TypeTraits<unsigned>
-{
-    typedef unsigned value_type;
-    typedef int int_type;
-    typedef unsigned uint_type;
-    typedef unsigned abs_type;
-    typedef unsigned sum_type;
+        enum {
+            delta = 32768, shift = 16
+        };
 
-    typedef uint64 w_type;
-    typedef ushort nu_type;
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
 
-template<> struct V_TypeTraits<int>
-{
-    typedef int value_type;
-    typedef int int_type;
-    typedef unsigned uint_type;
-    typedef unsigned abs_type;
-    typedef int sum_type;
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
 
-    typedef int64 w_type;
-    typedef short n_type;
-    typedef ushort nu_type;
+    template<>
+    struct V_TypeTraits<short> {
+        typedef short value_type;
+        typedef short int_type;
+        typedef ushort uint_type;
+        typedef ushort abs_type;
+        typedef int sum_type;
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        typedef int w_type;
+        typedef uchar nu_type;
+        typedef schar n_type;
 
-template<> struct V_TypeTraits<uint64>
-{
-    typedef uint64 value_type;
-    typedef int64 int_type;
-    typedef uint64 uint_type;
-    typedef uint64 abs_type;
-    typedef uint64 sum_type;
+        enum {
+            delta = 128, shift = 8
+        };
 
-    typedef unsigned nu_type;
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
 
-template<> struct V_TypeTraits<int64>
-{
-    typedef int64 value_type;
-    typedef int64 int_type;
-    typedef uint64 uint_type;
-    typedef uint64 abs_type;
-    typedef int64 sum_type;
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
 
-    typedef int nu_type;
+    template<>
+    struct V_TypeTraits<unsigned> {
+        typedef unsigned value_type;
+        typedef int int_type;
+        typedef unsigned uint_type;
+        typedef unsigned abs_type;
+        typedef unsigned sum_type;
 
-    static int_type reinterpret_int(value_type x) { return (int_type)x; }
-    static uint_type reinterpret_uint(value_type x) { return (uint_type)x; }
-    static value_type reinterpret_from_int(int_type x) { return (value_type)x; }
-};
+        typedef uint64 w_type;
+        typedef ushort nu_type;
+
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
+
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
+
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
+
+    template<>
+    struct V_TypeTraits<int> {
+        typedef int value_type;
+        typedef int int_type;
+        typedef unsigned uint_type;
+        typedef unsigned abs_type;
+        typedef int sum_type;
+
+        typedef int64 w_type;
+        typedef short n_type;
+        typedef ushort nu_type;
+
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
+
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
+
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
+
+    template<>
+    struct V_TypeTraits<uint64> {
+        typedef uint64 value_type;
+        typedef int64 int_type;
+        typedef uint64 uint_type;
+        typedef uint64 abs_type;
+        typedef uint64 sum_type;
+
+        typedef unsigned nu_type;
+
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
+
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
+
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
+
+    template<>
+    struct V_TypeTraits<int64> {
+        typedef int64 value_type;
+        typedef int64 int_type;
+        typedef uint64 uint_type;
+        typedef uint64 abs_type;
+        typedef int64 sum_type;
+
+        typedef int nu_type;
+
+        static int_type reinterpret_int(value_type x) { return (int_type) x; }
+
+        static uint_type reinterpret_uint(value_type x) { return (uint_type) x; }
+
+        static value_type reinterpret_from_int(int_type x) { return (value_type) x; }
+    };
 
 
-template<> struct V_TypeTraits<float>
-{
-    typedef float value_type;
-    typedef int int_type;
-    typedef unsigned uint_type;
-    typedef float abs_type;
-    typedef float sum_type;
+    template<>
+    struct V_TypeTraits<float> {
+        typedef float value_type;
+        typedef int int_type;
+        typedef unsigned uint_type;
+        typedef float abs_type;
+        typedef float sum_type;
 
-    typedef double w_type;
+        typedef double w_type;
 
-    static int_type reinterpret_int(value_type x)
-    {
-        Cv32suf u;
-        u.f = x;
-        return u.i;
-    }
-    static uint_type reinterpet_uint(value_type x)
-    {
-        Cv32suf u;
-        u.f = x;
-        return u.u;
-    }
-    static value_type reinterpret_from_int(int_type x)
-    {
-        Cv32suf u;
-        u.i = x;
-        return u.f;
-    }
-};
+        static int_type reinterpret_int(value_type x) {
+            Cv32suf u;
+            u.f = x;
+            return u.i;
+        }
 
-template<> struct V_TypeTraits<double>
-{
-    typedef double value_type;
-    typedef int64 int_type;
-    typedef uint64 uint_type;
-    typedef double abs_type;
-    typedef double sum_type;
-    static int_type reinterpret_int(value_type x)
-    {
-        Cv64suf u;
-        u.f = x;
-        return u.i;
-    }
-    static uint_type reinterpet_uint(value_type x)
-    {
-        Cv64suf u;
-        u.f = x;
-        return u.u;
-    }
-    static value_type reinterpret_from_int(int_type x)
-    {
-        Cv64suf u;
-        u.i = x;
-        return u.f;
-    }
-};
+        static uint_type reinterpet_uint(value_type x) {
+            Cv32suf u;
+            u.f = x;
+            return u.u;
+        }
+
+        static value_type reinterpret_from_int(int_type x) {
+            Cv32suf u;
+            u.i = x;
+            return u.f;
+        }
+    };
+
+    template<>
+    struct V_TypeTraits<double> {
+        typedef double value_type;
+        typedef int64 int_type;
+        typedef uint64 uint_type;
+        typedef double abs_type;
+        typedef double sum_type;
+
+        static int_type reinterpret_int(value_type x) {
+            Cv64suf u;
+            u.f = x;
+            return u.i;
+        }
+
+        static uint_type reinterpet_uint(value_type x) {
+            Cv64suf u;
+            u.f = x;
+            return u.u;
+        }
+
+        static value_type reinterpret_from_int(int_type x) {
+            Cv64suf u;
+            u.i = x;
+            return u.f;
+        }
+    };
 
 }
 

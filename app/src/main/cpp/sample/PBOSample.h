@@ -10,41 +10,41 @@
 #include "GLSampleBase.h"
 #include "../util/ImageDef.h"
 
-class PBOSample : public GLSampleBase
-{
+class PBOSample : public GLSampleBase {
 public:
-	PBOSample();
+    PBOSample();
 
-	virtual ~PBOSample();
+    virtual ~PBOSample();
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
+
+    virtual void Destroy();
 
     void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
 
-	bool CreateFrameBufferObj();
+    bool CreateFrameBufferObj();
 
-	void UploadPixels();
+    void UploadPixels();
 
-	void DownloadPixels();
+    void DownloadPixels();
 
 private:
-	GLuint m_ImageTextureId;
-	GLuint m_FboTextureId;
-	GLuint m_FboId;
-	GLuint m_VaoIds[2] = {GL_NONE};
-	GLuint m_VboIds[4] = {GL_NONE};;
-	GLint m_SamplerLoc;
-	NativeImage m_RenderImage;
-	GLuint m_FboProgramObj;
-	GLuint m_FboVertexShader;
-	GLuint m_FboFragmentShader;
-	GLint m_FboSamplerLoc;
-	GLint m_MVPMatrixLoc;
+    GLuint m_ImageTextureId;
+    GLuint fboTextureId;
+    GLuint fboId;
+    GLuint m_VaoIds[2] = {GL_NONE};
+    GLuint m_VboIds[4] = {GL_NONE};;
+    GLint m_SamplerLoc;
+    NativeImage m_RenderImage;
+    GLuint m_FboProgramObj;
+    GLuint m_FboVertexShader;
+    GLuint m_FboFragmentShader;
+    GLint m_FboSamplerLoc;
+    GLint m_MVPMatrixLoc;
 
     int m_AngleX;
     int m_AngleY;
@@ -52,8 +52,8 @@ private:
     float m_ScaleY;
     glm::mat4 m_MVPMatrix;
 
-    GLuint m_UploadPboIds[2] = {GL_NONE};;
-    GLuint m_DownloadPboIds[2] = {GL_NONE};;
+    GLuint uploadPboIds[2] = {GL_NONE};;
+    GLuint downloadPboIds[2] = {GL_NONE};;
     int m_FrameIndex;
 
 };

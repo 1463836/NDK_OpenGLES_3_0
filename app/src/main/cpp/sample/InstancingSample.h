@@ -10,22 +10,22 @@
 #include "GLSampleBase.h"
 #include "../util/ImageDef.h"
 
-class InstancingSample : public GLSampleBase
-{
+class InstancingSample : public GLSampleBase {
 public:
-	InstancingSample();
-	virtual ~InstancingSample();
+    InstancingSample();
 
-	virtual void Init();
+    virtual ~InstancingSample();
 
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
+
+    virtual void Destroy();
 
 private:
-	GLuint m_InstanceVbo;
-	GLuint m_VerticesVbo;
-	GLuint m_Vao;
+    GLuint m_InstanceVbo;
+    GLuint m_VerticesVbo;
+    GLuint m_Vao;
 };
 
 

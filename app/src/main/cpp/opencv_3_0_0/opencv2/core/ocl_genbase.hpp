@@ -42,23 +42,20 @@
 #ifndef __OPENCV_OPENCL_GENBASE_HPP__
 #define __OPENCV_OPENCL_GENBASE_HPP__
 
-namespace cv
-{
-namespace ocl
-{
+namespace cv {
+    namespace ocl {
 
 //! @cond IGNORED
 
-struct ProgramEntry
-{
-    const char* name;
-    const char* programStr;
-    const char* programHash;
-};
+        struct ProgramEntry {
+            const char *name;
+            const char *programStr;
+            const char *programHash;
+        };
 
 //! @endcond
 
-}
+    }
 }
 
 #endif

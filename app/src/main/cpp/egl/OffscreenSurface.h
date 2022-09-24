@@ -11,6 +11,7 @@
 class OffscreenSurface : public EglSurfaceBase {
 public:
     OffscreenSurface(EglCore *eglCore, int width, int height);
+
     void release();
 };
 

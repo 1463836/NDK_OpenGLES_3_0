@@ -18,39 +18,40 @@
 
 #define RENDER_IMG_NUM 3
 
-class BlendingSample : public GLSampleBase
-{
+class BlendingSample : public GLSampleBase {
 public:
-	BlendingSample();
+    BlendingSample();
 
-	virtual ~BlendingSample();
+    virtual ~BlendingSample();
 
-	virtual void LoadMultiImageWithIndex(int index, NativeImage *pImage);
+    virtual void LoadMultiImageWithIndex(int index, NativeImage *pImage);
 
-	virtual void Init();
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
 
-	virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+    virtual void Destroy();
 
-	void UpdateMatrix(glm::mat4 &mvpMatrix, int angleXRotate, int angleYRotate, float scale, glm::vec3 transVec3, float ratio);
+    virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+
+    void UpdateMatrix(glm::mat4 &mvpMatrix, int angleXRotate, int angleYRotate, float scale,
+                      glm::vec3 transVec3, float ratio);
 
 private:
-	GLuint m_TextureIds[RENDER_IMG_NUM];
-	GLint m_SamplerLoc;
-	GLint m_MVPMatLoc;
+    GLuint m_TextureIds[RENDER_IMG_NUM];
+    GLint m_SamplerLoc;
+    GLint m_MVPMatLoc;
 
-	GLuint m_VaoIds[3];
-	GLuint m_VboIds[3];
-	NativeImage m_RenderImages[RENDER_IMG_NUM];
-	glm::mat4 m_MVPMatrix;
+    GLuint m_VaoIds[3];
+    GLuint m_VboIds[3];
+    NativeImage m_RenderImages[RENDER_IMG_NUM];
+    glm::mat4 m_MVPMatrix;
 
-	std::vector<glm::vec3> windowsTrans;
-	std::map<GLfloat, glm::vec3> sorted;
+    std::vector<glm::vec3> windowsTrans;
+    std::map<GLfloat, glm::vec3> sorted;
 
-	int m_AngleX;
-	int m_AngleY;
+    int m_AngleX;
+    int m_AngleY;
 
 };
 

@@ -175,7 +175,9 @@
 # define CV_NEON 1
 # define CPU_HAS_NEON_FEATURE (true)
 #elif defined(__ARM_NEON__) || (defined (__ARM_NEON) && defined(__aarch64__))
+
 #  include <arm_neon.h>
+
 #  define CV_NEON 1
 #endif
 
@@ -268,31 +270,33 @@
 
 #if !defined _MSC_VER && !defined __BORLANDC__
 #  if defined __cplusplus && __cplusplus >= 201103L
+
 #    include <cstdint>
-     typedef std::uint32_t uint;
+
+typedef std::uint32_t uint;
 #  else
 #    include <stdint.h>
-     typedef uint32_t uint;
+typedef uint32_t uint;
 #  endif
 #else
-   typedef unsigned uint;
+typedef unsigned uint;
 #endif
 
 typedef signed char schar;
 
 #ifndef __IPL_H__
-   typedef unsigned char uchar;
-   typedef unsigned short ushort;
+typedef unsigned char uchar;
+typedef unsigned short ushort;
 #endif
 
 #if defined _MSC_VER || defined __BORLANDC__
-   typedef __int64 int64;
-   typedef unsigned __int64 uint64;
+typedef __int64 int64;
+typedef unsigned __int64 uint64;
 #  define CV_BIG_INT(n)   n##I64
 #  define CV_BIG_UINT(n)  n##UI64
 #else
-   typedef int64_t int64;
-   typedef uint64_t uint64;
+typedef int64_t int64;
+typedef uint64_t uint64;
 #  define CV_BIG_INT(n)   n##LL
 #  define CV_BIG_UINT(n)  n##ULL
 #endif
@@ -302,21 +306,19 @@ typedef signed char schar;
 #define CV_2PI 6.283185307179586476925286766559
 #define CV_LOG2 0.69314718055994530941723212145818
 
-typedef union Cv32suf
-{
+typedef union Cv32suf {
     int i;
     unsigned u;
     float f;
 }
-Cv32suf;
+        Cv32suf;
 
-typedef union Cv64suf
-{
+typedef union Cv64suf {
     int64 i;
     uint64 u;
     double f;
 }
-Cv64suf;
+        Cv64suf;
 
 
 /****************************************************************************************\
@@ -326,7 +328,9 @@ Cv64suf;
 #if defined __BORLANDC__
 #  include <fastmath.h>
 #elif defined __cplusplus
+
 #  include <cmath>
+
 #else
 #  include <math.h>
 #endif
@@ -339,20 +343,20 @@ Cv64suf;
 //! @{
 
 #if CV_VFP
-    // 1. general scheme
-    #define ARM_ROUND(_value, _asm_string) \
+// 1. general scheme
+#define ARM_ROUND(_value, _asm_string) \
         int res; \
         float temp; \
         asm(_asm_string : [res] "=r" (res), [temp] "=w" (temp) : [value] "w" (_value)); \
         return res
-    // 2. version for double
-    #ifdef __clang__
-        #define ARM_ROUND_DBL(value) ARM_ROUND(value, "vcvtr.s32.f64 %[temp], %[value] \n vmov %[res], %[temp]")
-    #else
-        #define ARM_ROUND_DBL(value) ARM_ROUND(value, "vcvtr.s32.f64 %[temp], %P[value] \n vmov %[res], %[temp]")
-    #endif
-    // 3. version for float
-    #define ARM_ROUND_FLT(value) ARM_ROUND(value, "vcvtr.s32.f32 %[temp], %[value]\n vmov %[res], %[temp]")
+// 2. version for double
+#ifdef __clang__
+#define ARM_ROUND_DBL(value) ARM_ROUND(value, "vcvtr.s32.f64 %[temp], %[value] \n vmov %[res], %[temp]")
+#else
+#define ARM_ROUND_DBL(value) ARM_ROUND(value, "vcvtr.s32.f64 %[temp], %P[value] \n vmov %[res], %[temp]")
+#endif
+// 3. version for float
+#define ARM_ROUND_FLT(value) ARM_ROUND(value, "vcvtr.s32.f32 %[temp], %[value]\n vmov %[res], %[temp]")
 #endif // CV_VFP
 
 /** @brief Rounds floating-point number to the nearest integer
@@ -361,8 +365,7 @@ Cv64suf;
  result is not defined.
  */
 CV_INLINE int
-cvRound( double value )
-{
+cvRound(double value) {
 #if ((defined _MSC_VER && defined _M_X64) || (defined __GNUC__ && defined __x86_64__ \
     && defined __SSE2__ && !defined __APPLE__)) && !defined(__CUDACC__)
     __m128d t = _mm_set_sd( value );
@@ -382,7 +385,7 @@ cvRound( double value )
 # if CV_VFP
     ARM_ROUND_DBL(value);
 # else
-    return (int)lrint(value);
+    return (int) lrint(value);
 # endif
 #else
     /* it's ok if round does not comply with IEEE754 standard;
@@ -399,14 +402,13 @@ cvRound( double value )
  @param value floating-point number. If the value is outside of INT_MIN ... INT_MAX range, the
  result is not defined.
  */
-CV_INLINE int cvFloor( double value )
-{
+CV_INLINE int cvFloor(double value) {
 #if (defined _MSC_VER && defined _M_X64 || (defined __GNUC__ && defined __SSE2__ && !defined __APPLE__)) && !defined(__CUDACC__)
     __m128d t = _mm_set_sd( value );
     int i = _mm_cvtsd_si32(t);
     return i - _mm_movemask_pd(_mm_cmplt_sd(t, _mm_cvtsi32_sd(t,i)));
 #elif defined __GNUC__
-    int i = (int)value;
+    int i = (int) value;
     return i - (i > value);
 #else
     int i = cvRound(value);
@@ -422,14 +424,13 @@ CV_INLINE int cvFloor( double value )
  @param value floating-point number. If the value is outside of INT_MIN ... INT_MAX range, the
  result is not defined.
  */
-CV_INLINE int cvCeil( double value )
-{
-#if (defined _MSC_VER && defined _M_X64 || (defined __GNUC__ && defined __SSE2__&& !defined __APPLE__)) && !defined(__CUDACC__)
+CV_INLINE int cvCeil(double value) {
+#if (defined _MSC_VER && defined _M_X64 || (defined __GNUC__ && defined __SSE2__ && !defined __APPLE__)) && !defined(__CUDACC__)
     __m128d t = _mm_set_sd( value );
     int i = _mm_cvtsd_si32(t);
     return i + _mm_movemask_pd(_mm_cmplt_sd(_mm_cvtsi32_sd(t,i), t));
 #elif defined __GNUC__
-    int i = (int)value;
+    int i = (int) value;
     return i + (i < value);
 #else
     int i = cvRound(value);
@@ -444,12 +445,11 @@ CV_INLINE int cvCeil( double value )
 
  The function returns 1 if the argument is Not A Number (as defined by IEEE754 standard), 0
  otherwise. */
-CV_INLINE int cvIsNaN( double value )
-{
+CV_INLINE int cvIsNaN(double value) {
     Cv64suf ieee754;
     ieee754.f = value;
-    return ((unsigned)(ieee754.u >> 32) & 0x7fffffff) +
-           ((unsigned)ieee754.u != 0) > 0x7ff00000;
+    return ((unsigned) (ieee754.u >> 32) & 0x7fffffff) +
+           ((unsigned) ieee754.u != 0) > 0x7ff00000;
 }
 
 /** @brief Determines if the argument is Infinity.
@@ -458,19 +458,17 @@ CV_INLINE int cvIsNaN( double value )
 
  The function returns 1 if the argument is a plus or minus infinity (as defined by IEEE754 standard)
  and 0 otherwise. */
-CV_INLINE int cvIsInf( double value )
-{
+CV_INLINE int cvIsInf(double value) {
     Cv64suf ieee754;
     ieee754.f = value;
-    return ((unsigned)(ieee754.u >> 32) & 0x7fffffff) == 0x7ff00000 &&
-            (unsigned)ieee754.u == 0;
+    return ((unsigned) (ieee754.u >> 32) & 0x7fffffff) == 0x7ff00000 &&
+           (unsigned) ieee754.u == 0;
 }
 
 #ifdef __cplusplus
 
 /** @overload */
-CV_INLINE int cvRound(float value)
-{
+CV_INLINE int cvRound(float value) {
 #if ((defined _MSC_VER && defined _M_X64) || (defined __GNUC__ && defined __x86_64__ && \
       defined __SSE2__ && !defined __APPLE__)) && !defined(__CUDACC__)
     __m128 t = _mm_set_ss( value );
@@ -490,7 +488,7 @@ CV_INLINE int cvRound(float value)
 # if CV_VFP
     ARM_ROUND_FLT(value);
 # else
-    return (int)lrintf(value);
+    return (int) lrintf(value);
 # endif
 #else
     /* it's ok if round does not comply with IEEE754 standard;
@@ -500,20 +498,18 @@ CV_INLINE int cvRound(float value)
 }
 
 /** @overload */
-CV_INLINE int cvRound( int value )
-{
+CV_INLINE int cvRound(int value) {
     return value;
 }
 
 /** @overload */
-CV_INLINE int cvFloor( float value )
-{
+CV_INLINE int cvFloor(float value) {
 #if (defined _MSC_VER && defined _M_X64 || (defined __GNUC__ && defined __SSE2__ && !defined __APPLE__)) && !defined(__CUDACC__)
     __m128 t = _mm_set_ss( value );
     int i = _mm_cvtss_si32(t);
     return i - _mm_movemask_ps(_mm_cmplt_ss(t, _mm_cvtsi32_ss(t,i)));
 #elif defined __GNUC__
-    int i = (int)value;
+    int i = (int) value;
     return i - (i > value);
 #else
     int i = cvRound(value);
@@ -523,20 +519,18 @@ CV_INLINE int cvFloor( float value )
 }
 
 /** @overload */
-CV_INLINE int cvFloor( int value )
-{
+CV_INLINE int cvFloor(int value) {
     return value;
 }
 
 /** @overload */
-CV_INLINE int cvCeil( float value )
-{
-#if (defined _MSC_VER && defined _M_X64 || (defined __GNUC__ && defined __SSE2__&& !defined __APPLE__)) && !defined(__CUDACC__)
+CV_INLINE int cvCeil(float value) {
+#if (defined _MSC_VER && defined _M_X64 || (defined __GNUC__ && defined __SSE2__ && !defined __APPLE__)) && !defined(__CUDACC__)
     __m128 t = _mm_set_ss( value );
     int i = _mm_cvtss_si32(t);
     return i + _mm_movemask_ps(_mm_cmplt_ss(_mm_cvtsi32_ss(t,i), t));
 #elif defined __GNUC__
-    int i = (int)value;
+    int i = (int) value;
     return i + (i < value);
 #else
     int i = cvRound(value);
@@ -546,22 +540,19 @@ CV_INLINE int cvCeil( float value )
 }
 
 /** @overload */
-CV_INLINE int cvCeil( int value )
-{
+CV_INLINE int cvCeil(int value) {
     return value;
 }
 
 /** @overload */
-CV_INLINE int cvIsNaN( float value )
-{
+CV_INLINE int cvIsNaN(float value) {
     Cv32suf ieee754;
     ieee754.f = value;
     return (ieee754.u & 0x7fffffff) > 0x7f800000;
 }
 
 /** @overload */
-CV_INLINE int cvIsInf( float value )
-{
+CV_INLINE int cvIsInf(float value) {
     Cv32suf ieee754;
     ieee754.f = value;
     return (ieee754.u & 0x7fffffff) == 0x7f800000;
@@ -569,8 +560,7 @@ CV_INLINE int cvIsInf( float value )
 
 #include <algorithm>
 
-namespace cv
-{
+namespace cv {
 
 /////////////// saturate_cast (used in image & signal processing) ///////////////////
 
@@ -598,71 +588,217 @@ namespace cv
  @param v Function parameter.
  @sa add, subtract, multiply, divide, Mat::convertTo
  */
-template<typename _Tp> static inline _Tp saturate_cast(uchar v)    { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(uchar v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(schar v)    { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(schar v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(ushort v)   { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(ushort v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(short v)    { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(short v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(unsigned v) { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(unsigned v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(int v)      { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(int v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(float v)    { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(float v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(double v)   { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(double v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(int64 v)    { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(int64 v) { return _Tp(v); }
+
 /** @overload */
-template<typename _Tp> static inline _Tp saturate_cast(uint64 v)   { return _Tp(v); }
+    template<typename _Tp>
+    static inline _Tp saturate_cast(uint64 v) { return _Tp(v); }
 
 //! @cond IGNORED
 
-template<> inline uchar saturate_cast<uchar>(schar v)        { return (uchar)std::max((int)v, 0); }
-template<> inline uchar saturate_cast<uchar>(ushort v)       { return (uchar)std::min((unsigned)v, (unsigned)UCHAR_MAX); }
-template<> inline uchar saturate_cast<uchar>(int v)          { return (uchar)((unsigned)v <= UCHAR_MAX ? v : v > 0 ? UCHAR_MAX : 0); }
-template<> inline uchar saturate_cast<uchar>(short v)        { return saturate_cast<uchar>((int)v); }
-template<> inline uchar saturate_cast<uchar>(unsigned v)     { return (uchar)std::min(v, (unsigned)UCHAR_MAX); }
-template<> inline uchar saturate_cast<uchar>(float v)        { int iv = cvRound(v); return saturate_cast<uchar>(iv); }
-template<> inline uchar saturate_cast<uchar>(double v)       { int iv = cvRound(v); return saturate_cast<uchar>(iv); }
-template<> inline uchar saturate_cast<uchar>(int64 v)        { return (uchar)((uint64)v <= (uint64)UCHAR_MAX ? v : v > 0 ? UCHAR_MAX : 0); }
-template<> inline uchar saturate_cast<uchar>(uint64 v)       { return (uchar)std::min(v, (uint64)UCHAR_MAX); }
+    template<>
+    inline uchar saturate_cast<uchar>(schar v) { return (uchar) std::max((int) v, 0); }
 
-template<> inline schar saturate_cast<schar>(uchar v)        { return (schar)std::min((int)v, SCHAR_MAX); }
-template<> inline schar saturate_cast<schar>(ushort v)       { return (schar)std::min((unsigned)v, (unsigned)SCHAR_MAX); }
-template<> inline schar saturate_cast<schar>(int v)          { return (schar)((unsigned)(v-SCHAR_MIN) <= (unsigned)UCHAR_MAX ? v : v > 0 ? SCHAR_MAX : SCHAR_MIN); }
-template<> inline schar saturate_cast<schar>(short v)        { return saturate_cast<schar>((int)v); }
-template<> inline schar saturate_cast<schar>(unsigned v)     { return (schar)std::min(v, (unsigned)SCHAR_MAX); }
-template<> inline schar saturate_cast<schar>(float v)        { int iv = cvRound(v); return saturate_cast<schar>(iv); }
-template<> inline schar saturate_cast<schar>(double v)       { int iv = cvRound(v); return saturate_cast<schar>(iv); }
-template<> inline schar saturate_cast<schar>(int64 v)        { return (schar)((uint64)((int64)v-SCHAR_MIN) <= (uint64)UCHAR_MAX ? v : v > 0 ? SCHAR_MAX : SCHAR_MIN); }
-template<> inline schar saturate_cast<schar>(uint64 v)       { return (schar)std::min(v, (uint64)SCHAR_MAX); }
+    template<>
+    inline uchar saturate_cast<uchar>(ushort v) {
+        return (uchar) std::min((unsigned) v, (unsigned) UCHAR_MAX);
+    }
 
-template<> inline ushort saturate_cast<ushort>(schar v)      { return (ushort)std::max((int)v, 0); }
-template<> inline ushort saturate_cast<ushort>(short v)      { return (ushort)std::max((int)v, 0); }
-template<> inline ushort saturate_cast<ushort>(int v)        { return (ushort)((unsigned)v <= (unsigned)USHRT_MAX ? v : v > 0 ? USHRT_MAX : 0); }
-template<> inline ushort saturate_cast<ushort>(unsigned v)   { return (ushort)std::min(v, (unsigned)USHRT_MAX); }
-template<> inline ushort saturate_cast<ushort>(float v)      { int iv = cvRound(v); return saturate_cast<ushort>(iv); }
-template<> inline ushort saturate_cast<ushort>(double v)     { int iv = cvRound(v); return saturate_cast<ushort>(iv); }
-template<> inline ushort saturate_cast<ushort>(int64 v)      { return (ushort)((uint64)v <= (uint64)USHRT_MAX ? v : v > 0 ? USHRT_MAX : 0); }
-template<> inline ushort saturate_cast<ushort>(uint64 v)     { return (ushort)std::min(v, (uint64)USHRT_MAX); }
+    template<>
+    inline uchar saturate_cast<uchar>(int v) {
+        return (uchar) ((unsigned) v <= UCHAR_MAX ? v : v > 0 ? UCHAR_MAX : 0);
+    }
 
-template<> inline short saturate_cast<short>(ushort v)       { return (short)std::min((int)v, SHRT_MAX); }
-template<> inline short saturate_cast<short>(int v)          { return (short)((unsigned)(v - SHRT_MIN) <= (unsigned)USHRT_MAX ? v : v > 0 ? SHRT_MAX : SHRT_MIN); }
-template<> inline short saturate_cast<short>(unsigned v)     { return (short)std::min(v, (unsigned)SHRT_MAX); }
-template<> inline short saturate_cast<short>(float v)        { int iv = cvRound(v); return saturate_cast<short>(iv); }
-template<> inline short saturate_cast<short>(double v)       { int iv = cvRound(v); return saturate_cast<short>(iv); }
-template<> inline short saturate_cast<short>(int64 v)        { return (short)((uint64)((int64)v - SHRT_MIN) <= (uint64)USHRT_MAX ? v : v > 0 ? SHRT_MAX : SHRT_MIN); }
-template<> inline short saturate_cast<short>(uint64 v)       { return (short)std::min(v, (uint64)SHRT_MAX); }
+    template<>
+    inline uchar saturate_cast<uchar>(short v) { return saturate_cast<uchar>((int) v); }
 
-template<> inline int saturate_cast<int>(float v)            { return cvRound(v); }
-template<> inline int saturate_cast<int>(double v)           { return cvRound(v); }
+    template<>
+    inline uchar saturate_cast<uchar>(unsigned v) {
+        return (uchar) std::min(v, (unsigned) UCHAR_MAX);
+    }
+
+    template<>
+    inline uchar saturate_cast<uchar>(float v) {
+        int iv = cvRound(v);
+        return saturate_cast<uchar>(iv);
+    }
+
+    template<>
+    inline uchar saturate_cast<uchar>(double v) {
+        int iv = cvRound(v);
+        return saturate_cast<uchar>(iv);
+    }
+
+    template<>
+    inline uchar saturate_cast<uchar>(int64 v) {
+        return (uchar) ((uint64) v <= (uint64) UCHAR_MAX ? v : v > 0 ? UCHAR_MAX : 0);
+    }
+
+    template<>
+    inline uchar saturate_cast<uchar>(uint64 v) { return (uchar) std::min(v, (uint64) UCHAR_MAX); }
+
+    template<>
+    inline schar saturate_cast<schar>(uchar v) { return (schar) std::min((int) v, SCHAR_MAX); }
+
+    template<>
+    inline schar saturate_cast<schar>(ushort v) {
+        return (schar) std::min((unsigned) v, (unsigned) SCHAR_MAX);
+    }
+
+    template<>
+    inline schar saturate_cast<schar>(int v) {
+        return (schar) ((unsigned) (v - SCHAR_MIN) <= (unsigned) UCHAR_MAX ? v : v > 0 ? SCHAR_MAX
+                                                                                       : SCHAR_MIN);
+    }
+
+    template<>
+    inline schar saturate_cast<schar>(short v) { return saturate_cast<schar>((int) v); }
+
+    template<>
+    inline schar saturate_cast<schar>(unsigned v) {
+        return (schar) std::min(v, (unsigned) SCHAR_MAX);
+    }
+
+    template<>
+    inline schar saturate_cast<schar>(float v) {
+        int iv = cvRound(v);
+        return saturate_cast<schar>(iv);
+    }
+
+    template<>
+    inline schar saturate_cast<schar>(double v) {
+        int iv = cvRound(v);
+        return saturate_cast<schar>(iv);
+    }
+
+    template<>
+    inline schar saturate_cast<schar>(int64 v) {
+        return (schar) ((uint64) ((int64) v - SCHAR_MIN) <= (uint64) UCHAR_MAX ? v : v > 0
+                                                                                     ? SCHAR_MAX
+                                                                                     : SCHAR_MIN);
+    }
+
+    template<>
+    inline schar saturate_cast<schar>(uint64 v) { return (schar) std::min(v, (uint64) SCHAR_MAX); }
+
+    template<>
+    inline ushort saturate_cast<ushort>(schar v) { return (ushort) std::max((int) v, 0); }
+
+    template<>
+    inline ushort saturate_cast<ushort>(short v) { return (ushort) std::max((int) v, 0); }
+
+    template<>
+    inline ushort saturate_cast<ushort>(int v) {
+        return (ushort) ((unsigned) v <= (unsigned) USHRT_MAX ? v : v > 0 ? USHRT_MAX : 0);
+    }
+
+    template<>
+    inline ushort saturate_cast<ushort>(unsigned v) {
+        return (ushort) std::min(v, (unsigned) USHRT_MAX);
+    }
+
+    template<>
+    inline ushort saturate_cast<ushort>(float v) {
+        int iv = cvRound(v);
+        return saturate_cast<ushort>(iv);
+    }
+
+    template<>
+    inline ushort saturate_cast<ushort>(double v) {
+        int iv = cvRound(v);
+        return saturate_cast<ushort>(iv);
+    }
+
+    template<>
+    inline ushort saturate_cast<ushort>(int64 v) {
+        return (ushort) ((uint64) v <= (uint64) USHRT_MAX ? v : v > 0 ? USHRT_MAX : 0);
+    }
+
+    template<>
+    inline ushort saturate_cast<ushort>(uint64 v) {
+        return (ushort) std::min(v, (uint64) USHRT_MAX);
+    }
+
+    template<>
+    inline short saturate_cast<short>(ushort v) { return (short) std::min((int) v, SHRT_MAX); }
+
+    template<>
+    inline short saturate_cast<short>(int v) {
+        return (short) ((unsigned) (v - SHRT_MIN) <= (unsigned) USHRT_MAX ? v : v > 0 ? SHRT_MAX
+                                                                                      : SHRT_MIN);
+    }
+
+    template<>
+    inline short saturate_cast<short>(unsigned v) {
+        return (short) std::min(v, (unsigned) SHRT_MAX);
+    }
+
+    template<>
+    inline short saturate_cast<short>(float v) {
+        int iv = cvRound(v);
+        return saturate_cast<short>(iv);
+    }
+
+    template<>
+    inline short saturate_cast<short>(double v) {
+        int iv = cvRound(v);
+        return saturate_cast<short>(iv);
+    }
+
+    template<>
+    inline short saturate_cast<short>(int64 v) {
+        return (short) ((uint64) ((int64) v - SHRT_MIN) <= (uint64) USHRT_MAX ? v : v > 0 ? SHRT_MAX
+                                                                                          : SHRT_MIN);
+    }
+
+    template<>
+    inline short saturate_cast<short>(uint64 v) { return (short) std::min(v, (uint64) SHRT_MAX); }
+
+    template<>
+    inline int saturate_cast<int>(float v) { return cvRound(v); }
+
+    template<>
+    inline int saturate_cast<int>(double v) { return cvRound(v); }
 
 // we intentionally do not clip negative numbers, to make -1 become 0xffffffff etc.
-template<> inline unsigned saturate_cast<unsigned>(float v)  { return cvRound(v); }
-template<> inline unsigned saturate_cast<unsigned>(double v) { return cvRound(v); }
+    template<>
+    inline unsigned saturate_cast<unsigned>(float v) { return cvRound(v); }
+
+    template<>
+    inline unsigned saturate_cast<unsigned>(double v) { return cvRound(v); }
 
 //! @endcond
 

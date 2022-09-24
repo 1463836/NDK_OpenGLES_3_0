@@ -34,13 +34,13 @@ file(GLOB src-files
         ${CMAKE_SOURCE_DIR}/looper/*.cpp)
 
 add_library( # Sets the name of the library.
-             native-render
+        native-render
 
-             # Sets the library as a shared library.
-             SHARED
+        # Sets the library as a shared library.
+        SHARED
 
-             # Provides a relative path to your source file(s).
-             ${src-files}
+        # Provides a relative path to your source file(s).
+        ${src-files}
         )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -50,19 +50,19 @@ add_library( # Sets the name of the library.
 # completing its build.
 
 find_library( # Sets the name of the path variable.
-              log-lib
+        log-lib
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log)
 
-add_library(assimp SHARED IMPORTED )
+add_library(assimp SHARED IMPORTED)
 set_target_properties(assimp PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_ABI}/libassimp.so)
 
-add_library(opencv_java3 SHARED IMPORTED )
+add_library(opencv_java3 SHARED IMPORTED)
 set_target_properties(opencv_java3 PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_ABI}/libopencv_java3.so)
 
-add_library(freetype STATIC IMPORTED )
+add_library(freetype STATIC IMPORTED)
 set_target_properties(freetype PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_ABI}/libfreetype.a)
 
 # Specifies libraries CMake should link to your target library. You
@@ -80,14 +80,14 @@ set(third-party-libs
         opencv_java3)
 
 target_link_libraries( # Specifies the target library.
-                       native-render
+        native-render
 
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib}
-                       ${third-party-libs}
-                       EGL
-                       GLESv3
-                       android
-                       )
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib}
+        ${third-party-libs}
+        EGL
+        GLESv3
+        android
+        )
 

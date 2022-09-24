@@ -12,41 +12,41 @@
 
 using namespace glm;
 
-class ShockWaveSample : public GLSampleBase
-{
+class ShockWaveSample : public GLSampleBase {
 public:
-	ShockWaveSample();
+    ShockWaveSample();
 
-	virtual ~ShockWaveSample();
+    virtual ~ShockWaveSample();
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
 
-	virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
+    virtual void Destroy();
 
-	void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
+    virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY);
 
-	virtual void SetTouchLocation(float x, float y);
+    void UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio);
+
+    virtual void SetTouchLocation(float x, float y);
 
 
 private:
-	GLuint m_TextureId;
-	GLuint m_VaoId;
-	GLuint m_VboIds[3];
-	NativeImage m_RenderImage;
-	glm::mat4 m_MVPMatrix;
+    GLuint m_TextureId;
+    GLuint m_VaoId;
+    GLuint m_VboIds[3];
+    NativeImage m_RenderImage;
+    glm::mat4 m_MVPMatrix;
 
-	int m_AngleX;
-	int m_AngleY;
-	float m_ScaleX;
-	float m_ScaleY;
-	int m_FrameIndex;
+    int m_AngleX;
+    int m_AngleY;
+    float m_ScaleX;
+    float m_ScaleY;
+    int m_FrameIndex;
 
-	vec2 m_touchXY;
+    vec2 m_touchXY;
 
 };
 

@@ -54,29 +54,30 @@
 #include <cuda_runtime.h>
 #include "opencv2/core/cvdef.h"
 
-namespace cv
-{
-    namespace cuda
-    {
+namespace cv {
+    namespace cuda {
 
 //! @addtogroup cudacore_struct
 //! @{
 
         class Stream;
+
         class Event;
 
         /** @brief Class that enables getting cudaStream_t from cuda::Stream
          */
-        struct StreamAccessor
-        {
-            CV_EXPORTS static cudaStream_t getStream(const Stream& stream);
+        struct StreamAccessor {
+            CV_EXPORTS static cudaStream_t
+
+            getStream(const Stream &stream);
         };
 
         /** @brief Class that enables getting cudaEvent_t from cuda::Event
          */
-        struct EventAccessor
-        {
-            CV_EXPORTS static cudaEvent_t getEvent(const Event& event);
+        struct EventAccessor {
+            CV_EXPORTS static cudaEvent_t
+
+            getEvent(const Event &event);
         };
 
 //! @}

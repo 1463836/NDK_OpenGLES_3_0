@@ -43,36 +43,39 @@
 
 #ifndef __OPENCV_SHAPE_SHAPE_TRANSFORM_HPP__
 #define __OPENCV_SHAPE_SHAPE_TRANSFORM_HPP__
+
 #include <vector>
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 
-namespace cv
-{
+namespace cv {
 
 //! @addtogroup shape
 //! @{
 
 /** @brief Abstract base class for shape transformation algorithms.
  */
-class CV_EXPORTS_W ShapeTransformer : public Algorithm
-{
-public:
+    class CV_EXPORTS_W ShapeTransformer
+
+    : public Algorithm {
+    public:
+
     /** @brief Estimate the transformation parameters of the current transformer algorithm, based on point matches.
 
     @param transformingShape Contour defining first shape.
     @param targetShape Contour defining second shape (Target).
     @param matches Standard vector of Matches between points.
      */
-    CV_WRAP virtual void estimateTransformation(InputArray transformingShape, InputArray targetShape,
-                                                 std::vector<DMatch>& matches) = 0;
+    CV_WRAP virtual void
+    estimateTransformation(InputArray transformingShape, InputArray targetShape,
+                           std::vector <DMatch> &matches) = 0;
 
     /** @brief Apply a transformation, given a pre-estimated transformation parameters.
 
     @param input Contour (set of points) to apply the transformation.
     @param output Output contour.
      */
-    CV_WRAP virtual float applyTransformation(InputArray input, OutputArray output=noArray()) = 0;
+    CV_WRAP virtual float applyTransformation(InputArray input, OutputArray output = noArray()) = 0;
 
     /** @brief Apply a transformation, given a pre-estimated transformation parameters, to an Image.
 
@@ -83,8 +86,8 @@ public:
     @param borderValue border value.
      */
     CV_WRAP virtual void warpImage(InputArray transformingImage, OutputArray output,
-                                   int flags=INTER_LINEAR, int borderMode=BORDER_CONSTANT,
-                                   const Scalar& borderValue=Scalar()) const = 0;
+                                   int flags = INTER_LINEAR, int borderMode = BORDER_CONSTANT,
+                                   const Scalar &borderValue = Scalar()) const = 0;
 };
 
 /***********************************************************************************/
@@ -95,36 +98,49 @@ public:
 ocupied in the paper "Principal Warps: Thin-Plate Splines and Decomposition of Deformations", by
 F.L. Bookstein (PAMI 1989). :
  */
-class CV_EXPORTS_W ThinPlateSplineShapeTransformer : public ShapeTransformer
+class CV_EXPORTS_W ThinPlateSplineShapeTransformer
+
+: public ShapeTransformer
 {
 public:
-    /** @brief Set the regularization parameter for relaxing the exact interpolation requirements of the TPS
-    algorithm.
 
-    @param beta value of the regularization parameter.
-     */
-    CV_WRAP virtual void setRegularizationParameter(double beta) = 0;
-    CV_WRAP virtual double getRegularizationParameter() const = 0;
+/** @brief Set the regularization parameter for relaxing the exact interpolation requirements of the TPS
+algorithm.
+
+@param beta value of the regularization parameter.
+ */
+CV_WRAP virtual void setRegularizationParameter(double beta) = 0;
+
+CV_WRAP virtual double getRegularizationParameter() const = 0;
+
 };
 
 /** Complete constructor */
 CV_EXPORTS_W Ptr<ThinPlateSplineShapeTransformer>
-    createThinPlateSplineShapeTransformer(double regularizationParameter=0);
+
+createThinPlateSplineShapeTransformer(double regularizationParameter = 0);
 
 /***********************************************************************************/
 /***********************************************************************************/
 
 /** @brief Wrapper class for the OpenCV Affine Transformation algorithm. :
  */
-class CV_EXPORTS_W AffineTransformer : public ShapeTransformer
+class CV_EXPORTS_W AffineTransformer
+
+: public ShapeTransformer
 {
 public:
-    CV_WRAP virtual void setFullAffine(bool fullAffine) = 0;
-    CV_WRAP virtual bool getFullAffine() const = 0;
+
+CV_WRAP virtual void setFullAffine(bool fullAffine) = 0;
+
+CV_WRAP virtual bool getFullAffine() const = 0;
+
 };
 
 /** Complete constructor */
-CV_EXPORTS_W Ptr<AffineTransformer> createAffineTransformer(bool fullAffine);
+CV_EXPORTS_W Ptr<AffineTransformer>
+
+createAffineTransformer(bool fullAffine);
 
 //! @}
 

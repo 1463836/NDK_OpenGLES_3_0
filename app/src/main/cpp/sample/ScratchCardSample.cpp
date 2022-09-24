@@ -155,8 +155,7 @@ void ScratchCardSample::Draw(int screenW, int screenH) {
 
     UpdateMVPMatrix(m_MVPMatrix, m_AngleX, m_AngleY, (float) screenW / screenH);
 
-    if(m_VboIds[0] == GL_NONE)
-    {
+    if (m_VboIds[0] == GL_NONE) {
         // Generate VBO Ids and load the VBOs with data
         glGenBuffers(2, m_VboIds);
         glBindBuffer(GL_ARRAY_BUFFER, m_VboIds[0]);
@@ -166,8 +165,7 @@ void ScratchCardSample::Draw(int screenW, int screenH) {
         glBufferData(GL_ARRAY_BUFFER, sizeof(m_pTexCoords), m_pTexCoords, GL_DYNAMIC_DRAW);
     }
 
-    if(m_VaoId == GL_NONE)
-    {
+    if (m_VaoId == GL_NONE) {
         // Generate VAO Id
         glGenVertexArrays(1, &m_VaoId);
         glBindVertexArray(m_VaoId);
@@ -175,7 +173,7 @@ void ScratchCardSample::Draw(int screenW, int screenH) {
     }
 
     ScopedSyncLock lock(&m_Lock);
-    if(m_PointVector.size() < 1)
+    if (m_PointVector.size() < 1)
         return;
 
     // Use the program object
@@ -196,7 +194,8 @@ void ScratchCardSample::Draw(int screenW, int screenH) {
 
     for (int i = 0; i < m_PointVector.size(); ++i) {
         vec4 pre_cur_point = m_PointVector[i];
-        CalculateMesh(vec2(pre_cur_point.x, pre_cur_point.y), vec2(pre_cur_point.z, pre_cur_point.w));
+        CalculateMesh(vec2(pre_cur_point.x, pre_cur_point.y),
+                      vec2(pre_cur_point.z, pre_cur_point.w));
         glBindBuffer(GL_ARRAY_BUFFER, m_VboIds[0]);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_pVtxCoords), m_pVtxCoords);
         glBindBuffer(GL_ARRAY_BUFFER, m_VboIds[1]);
@@ -255,7 +254,8 @@ void ScratchCardSample::UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int an
 
 }
 
-void ScratchCardSample::UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY) {
+void
+ScratchCardSample::UpdateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY) {
     GLSampleBase::UpdateTransformMatrix(rotateX, rotateY, scaleX, scaleY);
     m_AngleX = static_cast<int>(rotateX);
     m_AngleY = static_cast<int>(rotateY);
@@ -365,24 +365,22 @@ void ScratchCardSample::CalculateMesh(vec2 pre, vec2 cur) {
 
 void ScratchCardSample::SetTouchLocation(float x, float y) {
     GLSampleBase::SetTouchLocation(x, y);
-    if(m_SurfaceWidth * m_SurfaceHeight != 0)
-    {
+    if (m_SurfaceWidth * m_SurfaceHeight != 0) {
         ScopedSyncLock lock(&m_Lock);
-        if(x == -1) m_bReset = true;
+        if (x == -1) m_bReset = true;
 
-        if(m_bReset)
-        {
-            if(x != -1)
-            {
+        if (m_bReset) {
+            if (x != -1) {
                 m_CurTouchPoint = vec2(x / m_SurfaceWidth, y / m_SurfaceHeight);
                 m_bReset = false;
             }
         } else {
             m_PreTouchPoint = m_CurTouchPoint;
             m_CurTouchPoint = vec2(x / m_SurfaceWidth, y / m_SurfaceHeight);
-            if(m_CurTouchPoint == m_PreTouchPoint)
+            if (m_CurTouchPoint == m_PreTouchPoint)
                 return;
-            m_PointVector.emplace_back(m_PreTouchPoint.x, m_PreTouchPoint.y, m_CurTouchPoint.x, m_CurTouchPoint.y);
+            m_PointVector.emplace_back(m_PreTouchPoint.x, m_PreTouchPoint.y, m_CurTouchPoint.x,
+                                       m_CurTouchPoint.y);
         }
     }
 

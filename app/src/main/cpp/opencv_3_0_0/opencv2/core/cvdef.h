@@ -110,7 +110,7 @@
 #define CV_MAT_DEPTH_MASK       (CV_DEPTH_MAX - 1)
 #define CV_MAT_DEPTH(flags)     ((flags) & CV_MAT_DEPTH_MASK)
 
-#define CV_MAKETYPE(depth,cn) (CV_MAT_DEPTH(depth) + (((cn)-1) << CV_CN_SHIFT))
+#define CV_MAKETYPE(depth, cn) (CV_MAT_DEPTH(depth) + (((cn)-1) << CV_CN_SHIFT))
 #define CV_MAKE_TYPE CV_MAKETYPE
 
 #define CV_8UC1 CV_MAKETYPE(CV_8U,1)
@@ -177,11 +177,11 @@
     (CV_MAT_CN(type) << ((((sizeof(size_t)/4+1)*16384|0x3a50) >> CV_MAT_DEPTH(type)*2) & 3))
 
 #ifndef MIN
-#  define MIN(a,b)  ((a) > (b) ? (b) : (a))
+#  define MIN(a, b)  ((a) > (b) ? (b) : (a))
 #endif
 
 #ifndef MAX
-#  define MAX(a,b)  ((a) < (b) ? (b) : (a))
+#  define MAX(a, b)  ((a) < (b) ? (b) : (a))
 #endif
 
 /****************************************************************************************\
@@ -189,7 +189,7 @@
 \****************************************************************************************/
 
 #if defined __INTEL_COMPILER && !(defined WIN32 || defined _WIN32)
-   // atomic increment on the linux version of the Intel(tm) compiler
+// atomic increment on the linux version of the Intel(tm) compiler
 #  define CV_XADD(addr, delta) (int)_InterlockedExchangeAdd(const_cast<void*>(reinterpret_cast<volatile void*>(addr)), delta)
 #elif defined __GNUC__
 #  if defined __clang__ && __clang_major__ >= 3 && !defined __ANDROID__ && !defined __EMSCRIPTEN__ && !defined(__CUDACC__)
@@ -200,7 +200,7 @@
 #    endif
 #  else
 #    if defined __ATOMIC_ACQ_REL && !defined __clang__
-       // version for gcc >= 4.7
+// version for gcc >= 4.7
 #      define CV_XADD(addr, delta) (int)__atomic_fetch_add((unsigned*)(addr), (unsigned)(delta), __ATOMIC_ACQ_REL)
 #    else
 #      define CV_XADD(addr, delta) (int)__sync_fetch_and_add((unsigned*)(addr), (unsigned)(delta))
@@ -210,7 +210,7 @@
 #  include <intrin.h>
 #  define CV_XADD(addr, delta) (int)_InterlockedExchangeAdd((long volatile*)addr, delta)
 #else
-   CV_INLINE CV_XADD(int* addr, int delta) { int tmp = *addr; *addr += delta; return tmp; }
+CV_INLINE CV_XADD(int* addr, int delta) { int tmp = *addr; *addr += delta; return tmp; }
 #endif
 
 

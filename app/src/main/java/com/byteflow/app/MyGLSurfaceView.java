@@ -1,13 +1,11 @@
 package com.byteflow.app;
 
 import android.content.Context;
-import android.graphics.SurfaceTexture;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.Surface;
 
 import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE_3D_MODEL;
 import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE_BASIC_LIGHTING;
@@ -91,8 +89,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements ScaleGestureDetect
         if (e.getPointerCount() == 1) {
             consumeTouchEvent(e);
             long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - mLastMultiTouchTime > 200)
-            {
+            if (currentTimeMillis - mLastMultiTouchTime > 200) {
                 float y = e.getY();
                 float x = e.getX();
                 switch (e.getAction()) {
@@ -176,8 +173,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements ScaleGestureDetect
             case SAMPLE_TYPE_INSTANCING:
             case SAMPLE_TYPE_3D_MODEL:
             case SAMPLE_TYPE_KEY_VISUALIZE_AUDIO:
-            case SAMPLE_TYPE_KEY_TEXT_RENDER:
-            {
+            case SAMPLE_TYPE_KEY_TEXT_RENDER: {
                 float preSpan = detector.getPreviousSpan();
                 float curSpan = detector.getCurrentSpan();
                 if (curSpan < preSpan) {
@@ -189,7 +185,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements ScaleGestureDetect
                 mGLRender.updateTransformMatrix(mXAngle, mYAngle, mCurScale, mCurScale);
                 requestRender();
             }
-                break;
+            break;
             default:
                 break;
         }
@@ -268,7 +264,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements ScaleGestureDetect
                         break;
                 }
             }
-                break;
+            break;
             default:
                 break;
         }

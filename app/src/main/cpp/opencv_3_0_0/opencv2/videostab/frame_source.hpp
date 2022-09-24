@@ -46,44 +46,51 @@
 #include <vector>
 #include "opencv2/core.hpp"
 
-namespace cv
-{
-namespace videostab
-{
+namespace cv {
+    namespace videostab {
 
 //! @addtogroup videostab
 //! @{
 
-class CV_EXPORTS IFrameSource
-{
-public:
-    virtual ~IFrameSource() {}
-    virtual void reset() = 0;
-    virtual Mat nextFrame() = 0;
-};
+        class CV_EXPORTS IFrameSource
+                {
+                        public:
+                        virtual ~IFrameSource() {}
+                        virtual void reset() = 0;
+                        virtual Mat nextFrame() = 0;
+                };
 
-class CV_EXPORTS NullFrameSource : public IFrameSource
-{
-public:
-    virtual void reset() {}
-    virtual Mat nextFrame() { return Mat(); }
-};
+        class CV_EXPORTS NullFrameSource
 
-class CV_EXPORTS VideoFileSource : public IFrameSource
-{
-public:
+        : public IFrameSource {
+        public:
+
+        virtual void reset() {}
+
+        virtual Mat nextFrame() { return Mat(); }
+    };
+
+    class CV_EXPORTS VideoFileSource
+
+    : public IFrameSource {
+    public:
+
     VideoFileSource(const String &path, bool volatileFrame = false);
 
     virtual void reset();
+
     virtual Mat nextFrame();
 
     int width();
+
     int height();
+
     int count();
+
     double fps();
 
-private:
-    Ptr<IFrameSource> impl;
+    private:
+    Ptr <IFrameSource> impl;
 };
 
 //! @}

@@ -55,155 +55,138 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <set>
 #include <vector>
 
-namespace Assimp    {
+namespace Assimp {
     class BlobIOSystem;
 
 // --------------------------------------------------------------------------------------------
 /** Redirect IOStream to a blob */
 // --------------------------------------------------------------------------------------------
-class BlobIOStream : public IOStream
-{
-public:
+    class BlobIOStream : public IOStream {
+    public:
 
-    BlobIOStream(BlobIOSystem* creator, const std::string& file, size_t initial = 4096)
-        : buffer()
-        , cur_size()
-        , file_size()
-        , cursor()
-        , initial(initial)
-        , file(file)
-        , creator(creator)
-    {
-    }
-
-
-    virtual ~BlobIOStream();
-
-public:
-
-    // -------------------------------------------------------------------
-    aiExportDataBlob* GetBlob()
-    {
-        aiExportDataBlob* blob = new aiExportDataBlob();
-        blob->size = file_size;
-        blob->data = buffer;
-
-        buffer = NULL;
-
-        return blob;
-    }
-
-
-public:
-
-
-    // -------------------------------------------------------------------
-    virtual size_t Read( void *,
-        size_t,
-        size_t )
-    {
-        return 0;
-    }
-
-    // -------------------------------------------------------------------
-    virtual size_t Write(const void* pvBuffer,
-        size_t pSize,
-        size_t pCount)
-    {
-        pSize *= pCount;
-        if (cursor + pSize > cur_size) {
-            Grow(cursor + pSize);
+        BlobIOStream(BlobIOSystem *creator, const std::string &file, size_t initial = 4096)
+                : buffer(), cur_size(), file_size(), cursor(), initial(initial), file(file),
+                  creator(creator) {
         }
 
-        memcpy(buffer+cursor, pvBuffer, pSize);
-        cursor += pSize;
 
-        file_size = std::max(file_size,cursor);
-        return pCount;
-    }
+        virtual ~BlobIOStream();
 
-    // -------------------------------------------------------------------
-    virtual aiReturn Seek(size_t pOffset,
-        aiOrigin pOrigin)
-    {
-        switch(pOrigin)
-        {
-        case aiOrigin_CUR:
-            cursor += pOffset;
-            break;
+    public:
 
-        case aiOrigin_END:
-            cursor = file_size - pOffset;
-            break;
+        // -------------------------------------------------------------------
+        aiExportDataBlob *GetBlob() {
+            aiExportDataBlob *blob = new aiExportDataBlob();
+            blob->size = file_size;
+            blob->data = buffer;
 
-        case aiOrigin_SET:
-            cursor = pOffset;
-            break;
+            buffer = NULL;
 
-        default:
-            return AI_FAILURE;
+            return blob;
         }
 
-        if (cursor > file_size) {
-            Grow(cursor);
+
+    public:
+
+
+        // -------------------------------------------------------------------
+        virtual size_t Read(void *,
+                            size_t,
+                            size_t) {
+            return 0;
         }
 
-        file_size = std::max(cursor,file_size);
-        return AI_SUCCESS;
-    }
+        // -------------------------------------------------------------------
+        virtual size_t Write(const void *pvBuffer,
+                             size_t pSize,
+                             size_t pCount) {
+            pSize *= pCount;
+            if (cursor + pSize > cur_size) {
+                Grow(cursor + pSize);
+            }
 
-    // -------------------------------------------------------------------
-    virtual size_t Tell() const
-    {
-        return cursor;
-    }
+            memcpy(buffer + cursor, pvBuffer, pSize);
+            cursor += pSize;
 
-    // -------------------------------------------------------------------
-    virtual size_t FileSize() const
-    {
-        return file_size;
-    }
-
-    // -------------------------------------------------------------------
-    virtual void Flush()
-    {
-        // ignore
-    }
-
-
-
-private:
-
-    // -------------------------------------------------------------------
-    void Grow(size_t need = 0)
-    {
-        // 1.5 and phi are very heap-friendly growth factors (the first
-        // allows for frequent re-use of heap blocks, the second
-        // forms a fibonacci sequence with similar characteristics -
-        // since this heavily depends on the heap implementation
-        // and other factors as well, i'll just go with 1.5 since
-        // it is quicker to compute).
-        size_t new_size = std::max(initial, std::max( need, cur_size+(cur_size>>1) ));
-
-        const uint8_t* const old = buffer;
-        buffer = new uint8_t[new_size];
-
-        if (old) {
-            memcpy(buffer,old,cur_size);
-            delete[] old;
+            file_size = std::max(file_size, cursor);
+            return pCount;
         }
 
-        cur_size = new_size;
-    }
+        // -------------------------------------------------------------------
+        virtual aiReturn Seek(size_t pOffset,
+                              aiOrigin pOrigin) {
+            switch (pOrigin) {
+                case aiOrigin_CUR:
+                    cursor += pOffset;
+                    break;
 
-private:
+                case aiOrigin_END:
+                    cursor = file_size - pOffset;
+                    break;
 
-    uint8_t* buffer;
-    size_t cur_size,file_size, cursor, initial;
+                case aiOrigin_SET:
+                    cursor = pOffset;
+                    break;
 
-    const std::string file;
-    BlobIOSystem* const creator;
-};
+                default:
+                    return AI_FAILURE;
+            }
+
+            if (cursor > file_size) {
+                Grow(cursor);
+            }
+
+            file_size = std::max(cursor, file_size);
+            return AI_SUCCESS;
+        }
+
+        // -------------------------------------------------------------------
+        virtual size_t Tell() const {
+            return cursor;
+        }
+
+        // -------------------------------------------------------------------
+        virtual size_t FileSize() const {
+            return file_size;
+        }
+
+        // -------------------------------------------------------------------
+        virtual void Flush() {
+            // ignore
+        }
+
+
+    private:
+
+        // -------------------------------------------------------------------
+        void Grow(size_t need = 0) {
+            // 1.5 and phi are very heap-friendly growth factors (the first
+            // allows for frequent re-use of heap blocks, the second
+            // forms a fibonacci sequence with similar characteristics -
+            // since this heavily depends on the heap implementation
+            // and other factors as well, i'll just go with 1.5 since
+            // it is quicker to compute).
+            size_t new_size = std::max(initial, std::max(need, cur_size + (cur_size >> 1)));
+
+            const uint8_t *const old = buffer;
+            buffer = new uint8_t[new_size];
+
+            if (old) {
+                memcpy(buffer, old, cur_size);
+                delete[] old;
+            }
+
+            cur_size = new_size;
+        }
+
+    private:
+
+        uint8_t *buffer;
+        size_t cur_size, file_size, cursor, initial;
+
+        const std::string file;
+        BlobIOSystem *const creator;
+    };
 
 
 #define AI_BLOBIO_MAGIC "$blobfile"
@@ -211,126 +194,119 @@ private:
 // --------------------------------------------------------------------------------------------
 /** Redirect IOSystem to a blob */
 // --------------------------------------------------------------------------------------------
-class BlobIOSystem : public IOSystem
-{
+    class BlobIOSystem : public IOSystem {
 
-    friend class BlobIOStream;
-    typedef std::pair<std::string, aiExportDataBlob*> BlobEntry;
+        friend class BlobIOStream;
 
-public:
+        typedef std::pair<std::string, aiExportDataBlob *> BlobEntry;
 
-    BlobIOSystem()
-    {
-    }
+    public:
 
-    virtual ~BlobIOSystem()
-    {
-        for(BlobEntry& blobby : blobs) {
-            delete blobby.second;
+        BlobIOSystem() {
         }
-    }
 
-public:
-
-    // -------------------------------------------------------------------
-    const char* GetMagicFileName() const
-    {
-        return AI_BLOBIO_MAGIC;
-    }
-
-
-    // -------------------------------------------------------------------
-    aiExportDataBlob* GetBlobChain()
-    {
-        // one must be the master
-        aiExportDataBlob* master = NULL, *cur;
-        for(const BlobEntry& blobby : blobs) {
-            if (blobby.first == AI_BLOBIO_MAGIC) {
-                master = blobby.second;
-                break;
+        virtual ~BlobIOSystem() {
+            for (BlobEntry &blobby : blobs) {
+                delete blobby.second;
             }
         }
-        if (!master) {
-            ASSIMP_LOG_ERROR("BlobIOSystem: no data written or master file was not closed properly.");
-            return NULL;
+
+    public:
+
+        // -------------------------------------------------------------------
+        const char *GetMagicFileName() const {
+            return AI_BLOBIO_MAGIC;
         }
 
-        master->name.Set("");
 
-        cur = master;
-        for(const BlobEntry& blobby : blobs) {
-            if (blobby.second == master) {
-                continue;
+        // -------------------------------------------------------------------
+        aiExportDataBlob *GetBlobChain() {
+            // one must be the master
+            aiExportDataBlob *master = NULL, *cur;
+            for (const BlobEntry &blobby : blobs) {
+                if (blobby.first == AI_BLOBIO_MAGIC) {
+                    master = blobby.second;
+                    break;
+                }
+            }
+            if (!master) {
+                ASSIMP_LOG_ERROR(
+                        "BlobIOSystem: no data written or master file was not closed properly.");
+                return NULL;
             }
 
-            cur->next = blobby.second;
-            cur = cur->next;
+            master->name.Set("");
 
-            // extract the file extension from the file written
-            const std::string::size_type s = blobby.first.find_first_of('.');
-            cur->name.Set(s == std::string::npos ? blobby.first : blobby.first.substr(s+1));
+            cur = master;
+            for (const BlobEntry &blobby : blobs) {
+                if (blobby.second == master) {
+                    continue;
+                }
+
+                cur->next = blobby.second;
+                cur = cur->next;
+
+                // extract the file extension from the file written
+                const std::string::size_type s = blobby.first.find_first_of('.');
+                cur->name.Set(s == std::string::npos ? blobby.first : blobby.first.substr(s + 1));
+            }
+
+            // give up blob ownership
+            blobs.clear();
+            return master;
         }
 
-        // give up blob ownership
-        blobs.clear();
-        return master;
-    }
+    public:
 
-public:
-
-    // -------------------------------------------------------------------
-    virtual bool Exists( const char* pFile) const {
-        return created.find(std::string(pFile)) != created.end();
-    }
-
-
-    // -------------------------------------------------------------------
-    virtual char getOsSeparator() const {
-        return '/';
-    }
-
-
-    // -------------------------------------------------------------------
-    virtual IOStream* Open(const char* pFile,
-        const char* pMode)
-    {
-        if (pMode[0] != 'w') {
-            return NULL;
+        // -------------------------------------------------------------------
+        virtual bool Exists(const char *pFile) const {
+            return created.find(std::string(pFile)) != created.end();
         }
 
-        created.insert(std::string(pFile));
-        return new BlobIOStream(this,std::string(pFile));
-    }
 
-    // -------------------------------------------------------------------
-    virtual void Close( IOStream* pFile)
-    {
-        delete pFile;
-    }
+        // -------------------------------------------------------------------
+        virtual char getOsSeparator() const {
+            return '/';
+        }
 
-private:
 
-    // -------------------------------------------------------------------
-    void OnDestruct(const std::string& filename, BlobIOStream* child)
-    {
-        // we don't know in which the files are closed, so we
-        // can't reliably say that the first must be the master
-        // file ...
-        blobs.push_back( BlobEntry(filename,child->GetBlob()) );
-    }
+        // -------------------------------------------------------------------
+        virtual IOStream *Open(const char *pFile,
+                               const char *pMode) {
+            if (pMode[0] != 'w') {
+                return NULL;
+            }
 
-private:
-    std::set<std::string> created;
-    std::vector< BlobEntry > blobs;
-};
+            created.insert(std::string(pFile));
+            return new BlobIOStream(this, std::string(pFile));
+        }
+
+        // -------------------------------------------------------------------
+        virtual void Close(IOStream *pFile) {
+            delete pFile;
+        }
+
+    private:
+
+        // -------------------------------------------------------------------
+        void OnDestruct(const std::string &filename, BlobIOStream *child) {
+            // we don't know in which the files are closed, so we
+            // can't reliably say that the first must be the master
+            // file ...
+            blobs.push_back(BlobEntry(filename, child->GetBlob()));
+        }
+
+    private:
+        std::set <std::string> created;
+        std::vector <BlobEntry> blobs;
+    };
 
 
 // --------------------------------------------------------------------------------------------
-BlobIOStream :: ~BlobIOStream()
-{
-    creator->OnDestruct(file,this);
-    delete[] buffer;
-}
+    BlobIOStream::~BlobIOStream() {
+        creator->OnDestruct(file, this);
+        delete[] buffer;
+    }
 
 
 } // end Assimp

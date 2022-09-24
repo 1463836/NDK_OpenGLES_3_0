@@ -92,7 +92,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     "IMPORT_NO_SKELETON_MESHES"
 
 
-
 # if 0 // not implemented yet
 // ---------------------------------------------------------------------------
 /** @brief Set Assimp's multithreading policy.
@@ -391,8 +390,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *  See the documentation to #aiProcess_RemoveComponent for more details.
  */
-enum aiComponent
-{
+enum aiComponent {
     /** Normal vectors */
 #ifdef SWIG
     aiComponent_NORMALS = 0x2,
@@ -656,8 +654,8 @@ enum aiComponent
 * Property type: bool
 */
 #define AI_CONFIG_IMPORT_FBX_EMBEDDED_TEXTURES_LEGACY_NAMING \
-	"AI_CONFIG_IMPORT_FBX_EMBEDDED_TEXTURES_LEGACY_NAMING"
-	
+    "AI_CONFIG_IMPORT_FBX_EMBEDDED_TEXTURES_LEGACY_NAMING"
+
 // ---------------------------------------------------------------------------
 /** @brief  Set the vertex animation keyframe to be imported
  *
@@ -874,13 +872,13 @@ enum aiComponent
 #define AI_CONFIG_IMPORT_OGRE_TEXTURETYPE_FROM_FILENAME \
     "IMPORT_OGRE_TEXTURETYPE_FROM_FILENAME"
 
- /** @brief Specifies whether the Android JNI asset extraction is supported.
-  *
-  * Turn on this option if you want to manage assets in native
-  * Android application without having to keep the internal directory and asset
-  * manager pointer.
-  */
- #define AI_CONFIG_ANDROID_JNI_ASSIMP_MANAGER_SUPPORT "AI_CONFIG_ANDROID_JNI_ASSIMP_MANAGER_SUPPORT"
+/** @brief Specifies whether the Android JNI asset extraction is supported.
+ *
+ * Turn on this option if you want to manage assets in native
+ * Android application without having to keep the internal directory and asset
+ * manager pointer.
+ */
+#define AI_CONFIG_ANDROID_JNI_ASSIMP_MANAGER_SUPPORT "AI_CONFIG_ANDROID_JNI_ASSIMP_MANAGER_SUPPORT"
 
 // ---------------------------------------------------------------------------
 /** @brief Specifies whether the IFC loader skips over IfcSpace elements.

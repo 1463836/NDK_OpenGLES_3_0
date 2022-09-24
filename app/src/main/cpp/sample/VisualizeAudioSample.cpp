@@ -35,17 +35,17 @@ VisualizeAudioSample::VisualizeAudioSample() {
 
 VisualizeAudioSample::~VisualizeAudioSample() {
     if (m_pAudioBuffer != nullptr) {
-        delete [] m_pAudioBuffer;
+        delete[] m_pAudioBuffer;
         m_pAudioBuffer = nullptr;
     }
 
     if (m_pTextureCoords != nullptr) {
-        delete [] m_pTextureCoords;
+        delete[] m_pTextureCoords;
         m_pTextureCoords = nullptr;
     }
 
     if (m_pVerticesCoords != nullptr) {
-        delete [] m_pVerticesCoords;
+        delete[] m_pVerticesCoords;
         m_pVerticesCoords = nullptr;
     }
 
@@ -121,27 +121,27 @@ void VisualizeAudioSample::Draw(int screenW, int screenH) {
     UpdateMVPMatrix(m_MVPMatrix, m_AngleX, m_AngleY, (float) screenW / screenH);
 
     // Generate VBO Ids and load the VBOs with data
-    if(m_VboIds[0] == 0)
-    {
+    if (m_VboIds[0] == 0) {
         glGenBuffers(2, m_VboIds);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_VboIds[0]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_RenderDataSize * 6 * 3, m_pVerticesCoords, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_RenderDataSize * 6 * 3, m_pVerticesCoords,
+                     GL_DYNAMIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_VboIds[1]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_RenderDataSize * 6 * 2, m_pTextureCoords, GL_DYNAMIC_DRAW);
-    }
-    else
-    {
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * m_RenderDataSize * 6 * 2, m_pTextureCoords,
+                     GL_DYNAMIC_DRAW);
+    } else {
         glBindBuffer(GL_ARRAY_BUFFER, m_VboIds[0]);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * m_RenderDataSize * 6 * 3, m_pVerticesCoords);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * m_RenderDataSize * 6 * 3,
+                        m_pVerticesCoords);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_VboIds[1]);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * m_RenderDataSize * 6 * 2, m_pTextureCoords);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * m_RenderDataSize * 6 * 2,
+                        m_pTextureCoords);
     }
 
-    if(m_VaoId == GL_NONE)
-    {
+    if (m_VaoId == GL_NONE) {
         glGenVertexArrays(1, &m_VaoId);
         glBindVertexArray(m_VaoId);
 
@@ -184,7 +184,8 @@ void VisualizeAudioSample::Destroy() {
 
 }
 
-void VisualizeAudioSample::UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio) {
+void
+VisualizeAudioSample::UpdateMVPMatrix(glm::mat4 &mvpMatrix, int angleX, int angleY, float ratio) {
     LOGCATE("VisualizeAudioSample::UpdateMVPMatrix angleX = %d, angleY = %d, ratio = %f", angleX,
             angleY, ratio);
     angleX = angleX % 360;
@@ -238,24 +239,21 @@ void VisualizeAudioSample::LoadShortArrData(short *const pShortArr, int arrSize)
         return;
     m_FrameIndex++;
     std::unique_lock<std::mutex> lock(m_Mutex);
-    if(m_FrameIndex == 1)
-    {
+    if (m_FrameIndex == 1) {
         m_pAudioBuffer = new short[arrSize * 2];
         memcpy(m_pAudioBuffer, pShortArr, sizeof(short) * arrSize);
         m_AudioDataSize = arrSize;
         return;
     }
 
-    if(m_FrameIndex == 2)
-    {
+    if (m_FrameIndex == 2) {
         memcpy(m_pAudioBuffer + arrSize, pShortArr, sizeof(short) * arrSize);
         m_RenderDataSize = m_AudioDataSize / RESAMPLE_LEVEL;
         m_pVerticesCoords = new vec3[m_RenderDataSize * 6]; //(x,y,z) * 6 points
         m_pTextureCoords = new vec2[m_RenderDataSize * 6]; //(x,y) * 6 points
     }
 
-    if(m_FrameIndex > 2)
-    {
+    if (m_FrameIndex > 2) {
         memcpy(m_pAudioBuffer, m_pAudioBuffer + arrSize, sizeof(short) * arrSize);
         memcpy(m_pAudioBuffer + arrSize, pShortArr, sizeof(short) * arrSize);
     }
@@ -269,8 +267,7 @@ void VisualizeAudioSample::LoadShortArrData(short *const pShortArr, int arrSize)
 void VisualizeAudioSample::UpdateMesh() {
     //calculate mesh
     int step = m_AudioDataSize / 64;
-    if(m_pAudioBuffer + m_AudioDataSize - m_pCurAudioData >= step)
-    {
+    if (m_pAudioBuffer + m_AudioDataSize - m_pCurAudioData >= step) {
         LOGCATE("VisualizeAudioSample::Draw() m_pAudioBuffer + m_AudioDataSize - m_pCurAudioData >= step");
         float dy = 0.5f / MAX_AUDIO_LEVEL;
         float dx = 1.0f / m_RenderDataSize;
@@ -298,9 +295,7 @@ void VisualizeAudioSample::UpdateMesh() {
             m_pVerticesCoords[i * 6 + 5] = GLUtils::texCoordToVertexCoord(p3);
         }
         m_pCurAudioData += step;
-    }
-    else
-    {
+    } else {
         LOGCATE("VisualizeAudioSample::Draw() m_pAudioBuffer + m_AudioDataSize - m_pCurAudioData < step");
         m_bAudioDataReady = false;
         m_Cond.notify_all();

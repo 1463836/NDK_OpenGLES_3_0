@@ -187,7 +187,8 @@ EGLSurface EglCore::createWindowSurface(ANativeWindow *surface) {
             EGL_NONE
     };
     LOGCATE("eglCreateWindowSurface start");
-    EGLSurface eglSurface = eglCreateWindowSurface(mEGLDisplay, mEGLConfig, surface, surfaceAttribs);
+    EGLSurface eglSurface = eglCreateWindowSurface(mEGLDisplay, mEGLConfig, surface,
+                                                   surfaceAttribs);
     checkEglError("eglCreateWindowSurface");
     assert(eglSurface != NULL);
     if (eglSurface == NULL) {
@@ -279,7 +280,7 @@ void EglCore::setPresentationTime(EGLSurface eglSurface, long nsecs) {
  */
 bool EglCore::isCurrent(EGLSurface eglSurface) {
     return mEGLContext == eglGetCurrentContext() &&
-            eglSurface == eglGetCurrentSurface(EGL_DRAW);
+           eglSurface == eglGetCurrentSurface(EGL_DRAW);
 }
 
 /**
@@ -299,7 +300,7 @@ int EglCore::querySurface(EGLSurface eglSurface, int what) {
  * @param what
  * @return
  */
-const char* EglCore::queryString(int what) {
+const char *EglCore::queryString(int what) {
     return eglQueryString(mEGLDisplay, what);
 }
 

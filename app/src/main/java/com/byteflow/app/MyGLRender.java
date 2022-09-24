@@ -52,8 +52,7 @@ public class MyGLRender implements GLSurfaceView.Renderer {
         mNativeRender.native_SetParamsInt(paramType, value0, value1);
     }
 
-    public void setTouchLoc(float x, float y)
-    {
+    public void setTouchLoc(float x, float y) {
         mNativeRender.native_SetParamsFloat(SAMPLE_TYPE_SET_TOUCH_LOC, x, y);
     }
 
@@ -77,8 +76,7 @@ public class MyGLRender implements GLSurfaceView.Renderer {
         return mSampleType;
     }
 
-    public void updateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY)
-    {
+    public void updateTransformMatrix(float rotateX, float rotateY, float scaleX, float scaleY) {
         mNativeRender.native_UpdateTransformMatrix(rotateX, rotateY, scaleX, scaleY);
     }
 

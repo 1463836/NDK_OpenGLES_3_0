@@ -1,10 +1,8 @@
 /**
- *
  * Created by 公众号：字节流动 on 2021/3/12.
  * https://github.com/githubhaohao/NDK_OpenGLES_3_0
  * 最新文章首发于公众号：字节流动，有疑问或者技术交流可以添加微信 Byte-Flow ,领取视频教程, 拉你进技术交流群
- *
- * */
+ */
 
 package com.byteflow.app;
 
@@ -18,11 +16,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import androidx.annotation.*;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +27,12 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.byteflow.app.adapter.MyRecyclerViewAdapter;
 import com.byteflow.app.audio.AudioCollector;
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
 
     private MyGLSurfaceView mGLSurfaceView;
     private ViewGroup mRootView;
-    private int mSampleSelectedIndex = SAMPLE_TYPE_KEY_BEATING_HEART - SAMPLE_TYPE;
+    private int mSampleSelectedIndex = SAMPLE_TYPE_PBO - SAMPLE_TYPE;
     private AudioCollector mAudioCollector;
     private MyGLRender mGLRender = new MyGLRender();
     private SensorManager mSensorManager;
@@ -204,9 +203,9 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
         super.onDestroy();
         mGLRender.unInit();
         /*
-        * Once the EGL context gets destroyed all the GL buffers etc will get destroyed with it,
-        * so this is unnecessary.
-        * */
+         * Once the EGL context gets destroyed all the GL buffers etc will get destroyed with it,
+         * so this is unnecessary.
+         * */
     }
 
     @Override
@@ -238,9 +237,8 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
     public void onSensorChanged(SensorEvent event) {
         switch (event.sensor.getType()) {
             case Sensor.TYPE_GRAVITY:
-                Log.d(TAG, "onSensorChanged() called with TYPE_GRAVITY: [x,y,z] = [" + event.values[0] + ", " + event.values[1] + ", " + event.values[2] + "]");
-                if(mSampleSelectedIndex + SAMPLE_TYPE == SAMPLE_TYPE_KEY_AVATAR)
-                {
+//                Log.d(TAG, "onSensorChanged() called with TYPE_GRAVITY: [x,y,z] = [" + event.values[0] + ", " + event.values[1] + ", " + event.values[2] + "]");
+                if (mSampleSelectedIndex + SAMPLE_TYPE == SAMPLE_TYPE_KEY_AVATAR) {
                     mGLRender.setGravityXY(event.values[0], event.values[1]);
                 }
                 break;
@@ -328,21 +326,21 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
                         loadRGBAImage(R.drawable.board_texture);
                         break;
                     case SAMPLE_TYPE_BLENDING:
-                        loadRGBAImage(R.drawable.board_texture,0);
-                        loadRGBAImage(R.drawable.floor,1);
-                        loadRGBAImage(R.drawable.window,2);
+                        loadRGBAImage(R.drawable.board_texture, 0);
+                        loadRGBAImage(R.drawable.floor, 1);
+                        loadRGBAImage(R.drawable.window, 2);
                         break;
                     case SAMPLE_TYPE_PARTICLES:
                         loadRGBAImage(R.drawable.board_texture);
                         mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
                         break;
                     case SAMPLE_TYPE_SKYBOX:
-                        loadRGBAImage(R.drawable.right,0);
-                        loadRGBAImage(R.drawable.left,1);
-                        loadRGBAImage(R.drawable.top,2);
-                        loadRGBAImage(R.drawable.bottom,3);
-                        loadRGBAImage(R.drawable.back,4);
-                        loadRGBAImage(R.drawable.front,5);
+                        loadRGBAImage(R.drawable.right, 0);
+                        loadRGBAImage(R.drawable.left, 1);
+                        loadRGBAImage(R.drawable.top, 2);
+                        loadRGBAImage(R.drawable.bottom, 3);
+                        loadRGBAImage(R.drawable.back, 4);
+                        loadRGBAImage(R.drawable.front, 5);
                         break;
                     case SAMPLE_TYPE_PBO:
                         loadRGBAImage(R.drawable.front);
@@ -376,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
                         mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
                         break;
                     case SAMPLE_TYPE_KEY_VISUALIZE_AUDIO:
-                        if(mAudioCollector == null) {
+                        if (mAudioCollector == null) {
                             mAudioCollector = new AudioCollector();
                             mAudioCollector.addCallback(MainActivity.this);
                             mAudioCollector.init();
@@ -415,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
 
                 mGLSurfaceView.requestRender();
 
-                if(sampleType != SAMPLE_TYPE_KEY_VISUALIZE_AUDIO && mAudioCollector != null) {
+                if (sampleType != SAMPLE_TYPE_KEY_VISUALIZE_AUDIO && mAudioCollector != null) {
                     mAudioCollector.unInit();
                     mAudioCollector = null;
                 }
@@ -448,15 +446,10 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
                 byte[] byteArray = buf.array();
                 mGLRender.setImageData(IMAGE_FORMAT_RGBA, bitmap.getWidth(), bitmap.getHeight(), byteArray);
             }
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 is.close();
-            }
-            catch(IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -475,15 +468,10 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
                 byte[] byteArray = buf.array();
                 mGLRender.setImageDataWithIndex(index, IMAGE_FORMAT_RGBA, bitmap.getWidth(), bitmap.getHeight(), byteArray);
             }
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 is.close();
-            }
-            catch(IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -507,12 +495,9 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try
-            {
+            try {
                 is.close();
-            }
-            catch(IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

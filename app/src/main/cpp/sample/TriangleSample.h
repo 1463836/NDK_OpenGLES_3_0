@@ -8,19 +8,19 @@
 
 #include "GLSampleBase.h"
 
-class TriangleSample : public GLSampleBase
-{
+class TriangleSample : public GLSampleBase {
 public:
-	TriangleSample();
-	virtual ~TriangleSample();
+    TriangleSample();
 
-	virtual void LoadImage(NativeImage *pImage);
+    virtual ~TriangleSample();
 
-	virtual void Init();
+    virtual void LoadImage(NativeImage *pImage);
 
-	virtual void Draw(int screenW, int screenH);
+    virtual void Init();
 
-	virtual void Destroy();
+    virtual void Draw(int screenW, int screenH);
+
+    virtual void Destroy();
 };
 
 

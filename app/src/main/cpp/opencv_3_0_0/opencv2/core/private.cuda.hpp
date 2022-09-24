@@ -77,24 +77,48 @@
 
 //! @cond IGNORED
 
-namespace cv { namespace cuda {
-    CV_EXPORTS cv::String getNppErrorMessage(int code);
-    CV_EXPORTS cv::String getCudaDriverApiErrorMessage(int code);
+namespace cv {
+    namespace cuda {
+        CV_EXPORTS cv::String
 
-    CV_EXPORTS GpuMat getInputMat(InputArray _src, Stream& stream);
+        getNppErrorMessage(int code);
 
-    CV_EXPORTS GpuMat getOutputMat(OutputArray _dst, int rows, int cols, int type, Stream& stream);
-    static inline GpuMat getOutputMat(OutputArray _dst, Size size, int type, Stream& stream)
-    {
-        return getOutputMat(_dst, size.height, size.width, type, stream);
+        CV_EXPORTS cv::String
+
+        getCudaDriverApiErrorMessage(int code);
+
+        CV_EXPORTS GpuMat
+        getInputMat(InputArray
+        _src,
+        Stream &stream
+        );
+
+        CV_EXPORTS GpuMat
+        getOutputMat(OutputArray
+        _dst,
+        int rows,
+        int cols,
+        int type, Stream
+        & stream);
+        static inline GpuMat getOutputMat(OutputArray
+        _dst,
+        Size size,
+        int type, Stream
+        & stream) {
+        return
+        getOutputMat(_dst, size
+        .height, size.width, type, stream);
     }
 
-    CV_EXPORTS void syncOutput(const GpuMat& dst, OutputArray _dst, Stream& stream);
-}}
+    CV_EXPORTS void syncOutput(const GpuMat &dst, OutputArray _dst, Stream &stream);
+}
+}
 
 #ifndef HAVE_CUDA
 
-static inline void throw_no_cuda() { CV_Error(cv::Error::GpuNotSupported, "The library is compiled without CUDA support"); }
+static inline void throw_no_cuda() {
+    CV_Error(cv::Error::GpuNotSupported, "The library is compiled without CUDA support");
+}
 
 #else // HAVE_CUDA
 

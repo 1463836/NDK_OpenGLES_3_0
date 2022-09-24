@@ -49,74 +49,81 @@
 #include "opencv2/videostab/global_motion.hpp"
 #include "opencv2/videostab/log.hpp"
 
-namespace cv
-{
-namespace videostab
-{
+namespace cv {
+    namespace videostab {
 
 //! @addtogroup videostab
 //! @{
 
-class CV_EXPORTS WobbleSuppressorBase
-{
-public:
-    WobbleSuppressorBase();
+        class CV_EXPORTS WobbleSuppressorBase
+                {
+                        public:
+                        WobbleSuppressorBase();
 
-    virtual ~WobbleSuppressorBase() {}
+                        virtual ~WobbleSuppressorBase() {}
 
-    void setMotionEstimator(Ptr<ImageMotionEstimatorBase> val) { motionEstimator_ = val; }
-    Ptr<ImageMotionEstimatorBase> motionEstimator() const { return motionEstimator_; }
+                        void setMotionEstimator(Ptr<ImageMotionEstimatorBase> val) { motionEstimator_ = val; }
+                        Ptr<ImageMotionEstimatorBase> motionEstimator() const { return motionEstimator_; }
 
-    virtual void suppress(int idx, const Mat &frame, Mat &result) = 0;
+                        virtual void suppress(int idx, const Mat &frame, Mat &result) = 0;
 
 
-    // data from stabilizer
+                        // data from stabilizer
 
-    virtual void setFrameCount(int val) { frameCount_ = val; }
-    virtual int frameCount() const { return frameCount_; }
+                        virtual void setFrameCount(int val) { frameCount_ = val; }
+                        virtual int frameCount() const { return frameCount_; }
 
-    virtual void setMotions(const std::vector<Mat> &val) { motions_ = &val; }
-    virtual const std::vector<Mat>& motions() const { return *motions_; }
+                        virtual void setMotions(const std::vector<Mat> &val) { motions_ = &val; }
+                        virtual const std::vector<Mat>& motions() const { return *motions_; }
 
-    virtual void setMotions2(const std::vector<Mat> &val) { motions2_ = &val; }
-    virtual const std::vector<Mat>& motions2() const { return *motions2_; }
+                        virtual void setMotions2(const std::vector<Mat> &val) { motions2_ = &val; }
+                        virtual const std::vector<Mat>& motions2() const { return *motions2_; }
 
-    virtual void setStabilizationMotions(const std::vector<Mat> &val) { stabilizationMotions_ = &val; }
-    virtual const std::vector<Mat>& stabilizationMotions() const { return *stabilizationMotions_; }
+                        virtual void setStabilizationMotions(const std::vector<Mat> &val) { stabilizationMotions_ = &val; }
+                        virtual const std::vector<Mat>& stabilizationMotions() const { return *stabilizationMotions_; }
 
-protected:
-    Ptr<ImageMotionEstimatorBase> motionEstimator_;
-    int frameCount_;
-    const std::vector<Mat> *motions_;
-    const std::vector<Mat> *motions2_;
-    const std::vector<Mat> *stabilizationMotions_;
-};
+                        protected:
+                        Ptr<ImageMotionEstimatorBase> motionEstimator_;
+                        int frameCount_;
+                        const std::vector<Mat> *motions_;
+                        const std::vector<Mat> *motions2_;
+                        const std::vector<Mat> *stabilizationMotions_;
+                };
 
-class CV_EXPORTS NullWobbleSuppressor : public WobbleSuppressorBase
-{
-public:
-    virtual void suppress(int idx, const Mat &frame, Mat &result);
-};
+        class CV_EXPORTS NullWobbleSuppressor
 
-class CV_EXPORTS MoreAccurateMotionWobbleSuppressorBase : public WobbleSuppressorBase
-{
-public:
+        : public WobbleSuppressorBase {
+        public:
+
+        virtual void suppress(int idx, const Mat &frame, Mat &result);
+    };
+
+    class CV_EXPORTS MoreAccurateMotionWobbleSuppressorBase
+
+    : public WobbleSuppressorBase {
+    public:
+
     virtual void setPeriod(int val) { period_ = val; }
+
     virtual int period() const { return period_; }
 
-protected:
+    protected:
+
     MoreAccurateMotionWobbleSuppressorBase() { setPeriod(30); }
 
     int period_;
 };
 
-class CV_EXPORTS MoreAccurateMotionWobbleSuppressor : public MoreAccurateMotionWobbleSuppressorBase
+class CV_EXPORTS MoreAccurateMotionWobbleSuppressor
+
+: public MoreAccurateMotionWobbleSuppressorBase
 {
 public:
-    virtual void suppress(int idx, const Mat &frame, Mat &result);
+
+virtual void suppress(int idx, const Mat &frame, Mat &result);
 
 private:
-    Mat_<float> mapx_, mapy_;
+Mat_<float> mapx_, mapy_;
 };
 
 #if defined(HAVE_OPENCV_CUDAWARPING)

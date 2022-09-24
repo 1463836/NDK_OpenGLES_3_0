@@ -9,25 +9,24 @@
 #include "GLSampleBase.h"
 #include "../util/ImageDef.h"
 
-class TextureMapSample : public GLSampleBase
-{
+class TextureMapSample : public GLSampleBase {
 public:
-	TextureMapSample();
+    TextureMapSample();
 
-	virtual ~TextureMapSample();
+    virtual ~TextureMapSample();
 
-	void LoadImage(NativeImage *pImage);
+    void LoadImage(NativeImage *pImage);
 
-	virtual void Init();
+    virtual void Init();
 
-	virtual void Draw(int screenW, int screenH);
+    virtual void Draw(int screenW, int screenH);
 
-	virtual void Destroy();
+    virtual void Destroy();
 
 private:
-	GLuint m_TextureId;
-	GLint m_SamplerLoc;
-	NativeImage m_RenderImage;
+    GLuint m_TextureId;
+    GLint m_SamplerLoc;
+    NativeImage m_RenderImage;
 };
 
 

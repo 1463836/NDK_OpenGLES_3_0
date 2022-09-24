@@ -73,8 +73,7 @@
 
 //! @cond IGNORED
 
-namespace cv
-{
+namespace cv {
 #ifdef HAVE_TBB
 
     typedef tbb::blocked_range<int> BlockedRange;
@@ -95,38 +94,45 @@ namespace cv
 
     typedef tbb::concurrent_vector<Rect> ConcurrentRectVector;
 #else
-    class BlockedRange
-    {
+
+    class BlockedRange {
     public:
         BlockedRange() : _begin(0), _end(0), _grainsize(0) {}
-        BlockedRange(int b, int e, int g=1) : _begin(b), _end(e), _grainsize(g) {}
+
+        BlockedRange(int b, int e, int g = 1) : _begin(b), _end(e), _grainsize(g) {}
+
         int begin() const { return _begin; }
+
         int end() const { return _end; }
+
         int grainsize() const { return _grainsize; }
 
     protected:
         int _begin, _end, _grainsize;
     };
 
-    template<typename Body> static inline
-    void parallel_for( const BlockedRange& range, const Body& body )
-    {
+    template<typename Body>
+    static inline
+    void parallel_for(const BlockedRange &range, const Body &body) {
         body(range);
     }
-    typedef std::vector<Rect> ConcurrentRectVector;
 
-    class Split {};
+    typedef std::vector <Rect> ConcurrentRectVector;
 
-    template<typename Body> static inline
-    void parallel_reduce( const BlockedRange& range, Body& body )
-    {
+    class Split {
+    };
+
+    template<typename Body>
+    static inline
+    void parallel_reduce(const BlockedRange &range, Body &body) {
         body(range);
     }
+
 #endif
 
     // Returns a static string if there is a parallel framework,
     // NULL otherwise.
-    CV_EXPORTS const char* currentParallelFramework();
+    CV_EXPORTS const char *currentParallelFramework();
 } //namespace cv
 
 /****************************************************************************************\
@@ -140,15 +146,13 @@ namespace cv
 #define  CV_TOGGLE_FLT(x) ((x)^((int)(x) < 0 ? 0x7fffffff : 0))
 #define  CV_TOGGLE_DBL(x) ((x)^((int64)(x) < 0 ? CV_BIG_INT(0x7fffffffffffffff) : 0))
 
-static inline void* cvAlignPtr( const void* ptr, int align = 32 )
-{
-    CV_DbgAssert ( (align & (align-1)) == 0 );
-    return (void*)( ((size_t)ptr + align - 1) & ~(size_t)(align-1) );
+static inline void *cvAlignPtr(const void *ptr, int align = 32) {
+    CV_DbgAssert((align & (align - 1)) == 0);
+    return (void *) (((size_t) ptr + align - 1) & ~(size_t)(align - 1));
 }
 
-static inline int cvAlign( int size, int align )
-{
-    CV_DbgAssert( (align & (align-1)) == 0 && size < INT_MAX );
+static inline int cvAlign(int size, int align) {
+    CV_DbgAssert((align & (align - 1)) == 0 && size < INT_MAX);
     return (size + align - 1) & -align;
 }
 
@@ -159,9 +163,8 @@ static inline cv::Size cvGetMatSize( const CvMat* mat )
 }
 #endif
 
-namespace cv
-{
-CV_EXPORTS void scalarToRawData(const cv::Scalar& s, void* buf, int type, int unroll_to = 0);
+namespace cv {
+    CV_EXPORTS void scalarToRawData(const cv::Scalar &s, void *buf, int type, int unroll_to = 0);
 }
 
 // property implementation macros
@@ -243,44 +246,43 @@ static inline IppDataType ippiGetDataType(int depth)
 #endif
 
 /* IPP-compatible return codes */
-typedef enum CvStatus
-{
-    CV_BADMEMBLOCK_ERR          = -113,
-    CV_INPLACE_NOT_SUPPORTED_ERR= -112,
-    CV_UNMATCHED_ROI_ERR        = -111,
-    CV_NOTFOUND_ERR             = -110,
-    CV_BADCONVERGENCE_ERR       = -109,
+typedef enum CvStatus {
+    CV_BADMEMBLOCK_ERR = -113,
+    CV_INPLACE_NOT_SUPPORTED_ERR = -112,
+    CV_UNMATCHED_ROI_ERR = -111,
+    CV_NOTFOUND_ERR = -110,
+    CV_BADCONVERGENCE_ERR = -109,
 
-    CV_BADDEPTH_ERR             = -107,
-    CV_BADROI_ERR               = -106,
-    CV_BADHEADER_ERR            = -105,
-    CV_UNMATCHED_FORMATS_ERR    = -104,
-    CV_UNSUPPORTED_COI_ERR      = -103,
+    CV_BADDEPTH_ERR = -107,
+    CV_BADROI_ERR = -106,
+    CV_BADHEADER_ERR = -105,
+    CV_UNMATCHED_FORMATS_ERR = -104,
+    CV_UNSUPPORTED_COI_ERR = -103,
     CV_UNSUPPORTED_CHANNELS_ERR = -102,
-    CV_UNSUPPORTED_DEPTH_ERR    = -101,
-    CV_UNSUPPORTED_FORMAT_ERR   = -100,
+    CV_UNSUPPORTED_DEPTH_ERR = -101,
+    CV_UNSUPPORTED_FORMAT_ERR = -100,
 
-    CV_BADARG_ERR               = -49,  //ipp comp
-    CV_NOTDEFINED_ERR           = -48,  //ipp comp
+    CV_BADARG_ERR = -49,  //ipp comp
+    CV_NOTDEFINED_ERR = -48,  //ipp comp
 
-    CV_BADCHANNELS_ERR          = -47,  //ipp comp
-    CV_BADRANGE_ERR             = -44,  //ipp comp
-    CV_BADSTEP_ERR              = -29,  //ipp comp
+    CV_BADCHANNELS_ERR = -47,  //ipp comp
+    CV_BADRANGE_ERR = -44,  //ipp comp
+    CV_BADSTEP_ERR = -29,  //ipp comp
 
-    CV_BADFLAG_ERR              =  -12,
-    CV_DIV_BY_ZERO_ERR          =  -11, //ipp comp
-    CV_BADCOEF_ERR              =  -10,
+    CV_BADFLAG_ERR = -12,
+    CV_DIV_BY_ZERO_ERR = -11, //ipp comp
+    CV_BADCOEF_ERR = -10,
 
-    CV_BADFACTOR_ERR            =  -7,
-    CV_BADPOINT_ERR             =  -6,
-    CV_BADSCALE_ERR             =  -4,
-    CV_OUTOFMEM_ERR             =  -3,
-    CV_NULLPTR_ERR              =  -2,
-    CV_BADSIZE_ERR              =  -1,
-    CV_NO_ERR                   =   0,
-    CV_OK                       =   CV_NO_ERR
+    CV_BADFACTOR_ERR = -7,
+    CV_BADPOINT_ERR = -6,
+    CV_BADSCALE_ERR = -4,
+    CV_OUTOFMEM_ERR = -3,
+    CV_NULLPTR_ERR = -2,
+    CV_BADSIZE_ERR = -1,
+    CV_NO_ERR = 0,
+    CV_OK = CV_NO_ERR
 }
-CvStatus;
+        CvStatus;
 
 #ifdef HAVE_TEGRA_OPTIMIZATION
 namespace tegra {

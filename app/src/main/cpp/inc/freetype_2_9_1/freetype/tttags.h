@@ -113,7 +113,7 @@ FT_BEGIN_HEADER
 #define TTAG_0xA5lst  FT_MAKE_TAG( 0xA5, 'l', 's', 't' )
 
 
-FT_END_HEADER
+        FT_END_HEADER
 
 #endif /* TTAGS_H_ */
 

@@ -46,8 +46,7 @@
 
 #include "opencv2/core/cvdef.h"
 
-namespace cv
-{
+namespace cv {
 
 //! @addtogroup core_basic
 //! @{
@@ -103,155 +102,165 @@ not native to OpenCV. For example, the matrix B initialization above is compiled
 defines the proper specialized template class DataType\<complex\<_Tp\> \> . This mechanism is also
 useful (and used in OpenCV this way) for generic algorithms implementations.
 */
-template<typename _Tp> class DataType
-{
-public:
-    typedef _Tp         value_type;
-    typedef value_type  work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 1,
-           depth        = -1,
-           channels     = 1,
-           fmt          = 0,
-           type = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<typename _Tp>
+    class DataType {
+    public:
+        typedef _Tp value_type;
+        typedef value_type work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 1,
+            depth = -1,
+            channels = 1,
+            fmt = 0,
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<bool>
-{
-public:
-    typedef bool        value_type;
-    typedef int         work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_8U,
-           channels     = 1,
-           fmt          = (int)'u',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<bool> {
+    public:
+        typedef bool value_type;
+        typedef int work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_8U,
+            channels = 1,
+            fmt = (int) 'u',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<uchar>
-{
-public:
-    typedef uchar       value_type;
-    typedef int         work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_8U,
-           channels     = 1,
-           fmt          = (int)'u',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<uchar> {
+    public:
+        typedef uchar value_type;
+        typedef int work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_8U,
+            channels = 1,
+            fmt = (int) 'u',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<schar>
-{
-public:
-    typedef schar       value_type;
-    typedef int         work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_8S,
-           channels     = 1,
-           fmt          = (int)'c',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<schar> {
+    public:
+        typedef schar value_type;
+        typedef int work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_8S,
+            channels = 1,
+            fmt = (int) 'c',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<char>
-{
-public:
-    typedef schar       value_type;
-    typedef int         work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_8S,
-           channels     = 1,
-           fmt          = (int)'c',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<char> {
+    public:
+        typedef schar value_type;
+        typedef int work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_8S,
+            channels = 1,
+            fmt = (int) 'c',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<ushort>
-{
-public:
-    typedef ushort      value_type;
-    typedef int         work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_16U,
-           channels     = 1,
-           fmt          = (int)'w',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<ushort> {
+    public:
+        typedef ushort value_type;
+        typedef int work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_16U,
+            channels = 1,
+            fmt = (int) 'w',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<short>
-{
-public:
-    typedef short       value_type;
-    typedef int         work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_16S,
-           channels     = 1,
-           fmt          = (int)'s',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<short> {
+    public:
+        typedef short value_type;
+        typedef int work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_16S,
+            channels = 1,
+            fmt = (int) 's',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<int>
-{
-public:
-    typedef int         value_type;
-    typedef value_type  work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_32S,
-           channels     = 1,
-           fmt          = (int)'i',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<int> {
+    public:
+        typedef int value_type;
+        typedef value_type work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_32S,
+            channels = 1,
+            fmt = (int) 'i',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<float>
-{
-public:
-    typedef float       value_type;
-    typedef value_type  work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_32F,
-           channels     = 1,
-           fmt          = (int)'f',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<float> {
+    public:
+        typedef float value_type;
+        typedef value_type work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_32F,
+            channels = 1,
+            fmt = (int) 'f',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
-template<> class DataType<double>
-{
-public:
-    typedef double      value_type;
-    typedef value_type  work_type;
-    typedef value_type  channel_type;
-    typedef value_type  vec_type;
-    enum { generic_type = 0,
-           depth        = CV_64F,
-           channels     = 1,
-           fmt          = (int)'d',
-           type         = CV_MAKETYPE(depth, channels)
-         };
-};
+    template<>
+    class DataType<double> {
+    public:
+        typedef double value_type;
+        typedef value_type work_type;
+        typedef value_type channel_type;
+        typedef value_type vec_type;
+        enum {
+            generic_type = 0,
+            depth = CV_64F,
+            channels = 1,
+            fmt = (int) 'd',
+            type = CV_MAKETYPE(depth, channels)
+        };
+    };
 
 
 /** @brief A helper class for cv::DataType
@@ -259,65 +268,79 @@ public:
 The class is specialized for each fundamental numerical data type supported by OpenCV. It provides
 DataDepth<T>::value constant.
 */
-template<typename _Tp> class DataDepth
-{
-public:
-    enum
-    {
-        value = DataType<_Tp>::depth,
-        fmt   = DataType<_Tp>::fmt
+    template<typename _Tp>
+    class DataDepth {
+    public:
+        enum {
+            value = DataType<_Tp>::depth,
+            fmt = DataType<_Tp>::fmt
+        };
     };
-};
 
 
+    template<int _depth>
+    class TypeDepth {
+        enum {
+            depth = CV_USRTYPE1
+        };
+        typedef void value_type;
+    };
 
-template<int _depth> class TypeDepth
-{
-    enum { depth = CV_USRTYPE1 };
-    typedef void value_type;
-};
+    template<>
+    class TypeDepth<CV_8U> {
+        enum {
+            depth = CV_8U
+        };
+        typedef uchar value_type;
+    };
 
-template<> class TypeDepth<CV_8U>
-{
-    enum { depth = CV_8U };
-    typedef uchar value_type;
-};
+    template<>
+    class TypeDepth<CV_8S> {
+        enum {
+            depth = CV_8S
+        };
+        typedef schar value_type;
+    };
 
-template<> class TypeDepth<CV_8S>
-{
-    enum { depth = CV_8S };
-    typedef schar value_type;
-};
+    template<>
+    class TypeDepth<CV_16U> {
+        enum {
+            depth = CV_16U
+        };
+        typedef ushort value_type;
+    };
 
-template<> class TypeDepth<CV_16U>
-{
-    enum { depth = CV_16U };
-    typedef ushort value_type;
-};
+    template<>
+    class TypeDepth<CV_16S> {
+        enum {
+            depth = CV_16S
+        };
+        typedef short value_type;
+    };
 
-template<> class TypeDepth<CV_16S>
-{
-    enum { depth = CV_16S };
-    typedef short value_type;
-};
+    template<>
+    class TypeDepth<CV_32S> {
+        enum {
+            depth = CV_32S
+        };
+        typedef int value_type;
+    };
 
-template<> class TypeDepth<CV_32S>
-{
-    enum { depth = CV_32S };
-    typedef int value_type;
-};
+    template<>
+    class TypeDepth<CV_32F> {
+        enum {
+            depth = CV_32F
+        };
+        typedef float value_type;
+    };
 
-template<> class TypeDepth<CV_32F>
-{
-    enum { depth = CV_32F };
-    typedef float value_type;
-};
-
-template<> class TypeDepth<CV_64F>
-{
-    enum { depth = CV_64F };
-    typedef double value_type;
-};
+    template<>
+    class TypeDepth<CV_64F> {
+        enum {
+            depth = CV_64F
+        };
+        typedef double value_type;
+    };
 
 //! @}
 

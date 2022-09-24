@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace Assimp {
 
-class LogStream;
+    class LogStream;
 
 // Maximum length of a log message. Longer messages are rejected.
 #define MAX_LOG_MESSAGE_LENGTH 1024u
@@ -61,12 +61,12 @@ class LogStream;
  *  Assimp provides a default implementation and uses it for almost all
  *  logging stuff ('DefaultLogger'). This class defines just basic logging
  *  behavior and is not of interest for you. Instead, take a look at #DefaultLogger. */
-class ASSIMP_API Logger
+    class ASSIMP_API Logger
+
 #ifndef SWIG
     : public Intern::AllocateFromAssimpHeap
-#endif
-{
-public:
+#endif {
+    public:
 
     // ----------------------------------------------------------------------
     /** @enum   LogSeverity
@@ -86,39 +86,45 @@ public:
      *  if it doesn't specify the corresponding ErrorSeverity flag.
      */
     enum ErrorSeverity {
-        Debugging   = 1,    //!< Debug log message
-        Info        = 2,    //!< Info log message
-        Warn        = 4,    //!< Warn log message
-        Err         = 8     //!< Error log message
+        Debugging = 1,    //!< Debug log message
+        Info = 2,    //!< Info log message
+        Warn = 4,    //!< Warn log message
+        Err = 8     //!< Error log message
     };
 
-public:
+    public:
 
     /** @brief  Virtual destructor */
-    virtual ~Logger();
+    virtual ~
+
+    Logger();
 
     // ----------------------------------------------------------------------
     /** @brief  Writes a debug message
      *   @param message Debug message*/
-    void debug(const char* message);
+    void debug(const char *message);
+
     void debug(const std::string &message);
 
     // ----------------------------------------------------------------------
     /** @brief  Writes a info message
      *  @param  message Info message*/
-    void info(const char* message);
+    void info(const char *message);
+
     void info(const std::string &message);
 
     // ----------------------------------------------------------------------
     /** @brief  Writes a warning message
      *  @param  message Warn message*/
-    void warn(const char* message);
+    void warn(const char *message);
+
     void warn(const std::string &message);
 
     // ----------------------------------------------------------------------
     /** @brief  Writes an error message
      *  @param  message Error message*/
-    void error(const char* message);
+    void error(const char *message);
+
     void error(const std::string &message);
 
     // ----------------------------------------------------------------------
@@ -143,7 +149,7 @@ public:
      *    combination of the ErrorSeverity flags.
      *  @return true if the stream has been attached, false otherwise.*/
     virtual bool attachStream(LogStream *pStream,
-        unsigned int severity = Debugging | Err | Warn | Info) = 0;
+                              unsigned int severity = Debugging | Err | Warn | Info) = 0;
 
     // ----------------------------------------------------------------------
     /** @brief  Detach a still attached stream from the logger (or
@@ -155,18 +161,22 @@ public:
      *    the caller retakes the possession of the stream.
      *  @return true if the stream has been detached, false otherwise.*/
     virtual bool detatchStream(LogStream *pStream,
-        unsigned int severity = Debugging | Err | Warn | Info) = 0;
+                               unsigned int severity = Debugging | Err | Warn | Info) = 0;
 
-protected:
+    protected:
+
     /**
      *  Default constructor
      */
-    Logger() AI_NO_EXCEPT;
+    Logger()
+
+    AI_NO_EXCEPT;
 
     /**
      *  Construction with a given log severity
      */
-    explicit Logger(LogSeverity severity);
+    explicit Logger(LogSeverity
+    severity);
 
     // ----------------------------------------------------------------------
     /**
@@ -176,7 +186,7 @@ protected:
      *  @note  The message string is only valid until the scope of
      *    the function is left.
      */
-    virtual void OnDebug(const char* message)= 0;
+    virtual void OnDebug(const char *message) = 0;
 
     // ----------------------------------------------------------------------
     /**
@@ -186,7 +196,7 @@ protected:
      *  @note  The message string is only valid until the scope of
      *    the function is left.
      */
-    virtual void OnInfo(const char* message) = 0;
+    virtual void OnInfo(const char *message) = 0;
 
     // ----------------------------------------------------------------------
     /**
@@ -196,7 +206,7 @@ protected:
      *  @note  The message string is only valid until the scope of
      *    the function is left.
      */
-    virtual void OnWarn(const char* essage) = 0;
+    virtual void OnWarn(const char *essage) = 0;
 
     // ----------------------------------------------------------------------
     /**
@@ -206,18 +216,21 @@ protected:
      *  @note  The message string is only valid until the scope of
      *    the function is left.
      */
-    virtual void OnError(const char* message) = 0;
+    virtual void OnError(const char *message) = 0;
 
-protected:
+    protected:
     LogSeverity m_Severity;
 };
 
 // ----------------------------------------------------------------------------------
 //  Default constructor
 inline
-Logger::Logger() AI_NO_EXCEPT
-: m_Severity(NORMAL) {
-    // empty
+Logger::Logger()
+
+AI_NO_EXCEPT
+:
+m_Severity(NORMAL) {
+        // empty
 }
 
 // ----------------------------------------------------------------------------------
@@ -231,14 +244,14 @@ Logger::~Logger() {
 // Construction with given logging severity
 inline
 Logger::Logger(LogSeverity severity)
-: m_Severity(severity) {
+        : m_Severity(severity) {
     // empty
 }
 
 // ----------------------------------------------------------------------------------
 // Log severity setter
 inline
-void Logger::setLogSeverity(LogSeverity log_severity){
+void Logger::setLogSeverity(LogSeverity log_severity) {
     m_Severity = log_severity;
 }
 
@@ -274,16 +287,16 @@ void Logger::info(const std::string &message) {
 }
 
 // ------------------------------------------------------------------------------------------------
-#define ASSIMP_LOG_WARN_F(string,...)\
+#define ASSIMP_LOG_WARN_F(string, ...)\
     DefaultLogger::get()->warn((Formatter::format(string),__VA_ARGS__))
 
-#define ASSIMP_LOG_ERROR_F(string,...)\
+#define ASSIMP_LOG_ERROR_F(string, ...)\
     DefaultLogger::get()->error((Formatter::format(string),__VA_ARGS__))
 
-#define ASSIMP_LOG_DEBUG_F(string,...)\
+#define ASSIMP_LOG_DEBUG_F(string, ...)\
     DefaultLogger::get()->debug((Formatter::format(string),__VA_ARGS__))
 
-#define ASSIMP_LOG_INFO_F(string,...)\
+#define ASSIMP_LOG_INFO_F(string, ...)\
     DefaultLogger::get()->info((Formatter::format(string),__VA_ARGS__))
 
 
